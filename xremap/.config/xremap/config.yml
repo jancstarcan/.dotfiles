@@ -1,6 +1,0 @@
-keymap:
-  - name: caps2esc
-    remap:
-      CapsLock: Esc
-      Grave: CapsLock
-      Esc: Grave

@@ -1,4 +1,4 @@
-#!/home/jan/.nix-profile/bin/zsh
+#!/bin/zsh
 
-swaymsg exec waybar &
-pkill waybar
+killall -9 waybar
+exec waybar &

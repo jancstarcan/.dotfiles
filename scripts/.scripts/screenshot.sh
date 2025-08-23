@@ -1,4 +1,4 @@
-#!/home/jan/.nix-profile/bin/zsh
+#!/bin/zsh
 
 usage() {
   echo "Usage: $0 {full|area|active}"
