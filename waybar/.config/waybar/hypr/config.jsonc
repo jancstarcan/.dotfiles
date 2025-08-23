@@ -1,0 +1,71 @@
+// -*- mode: jsonc -*-
+{
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 32, // Waybar height (to be removed for auto height)
+    // Choose the order of the modules
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "hyprland/window"
+    ],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "disk",
+        "pulseaudio",
+        "clock"
+    ],
+    // Modules configuration
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": "{name}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "disk": {
+        "format": "{percentage_used}% 󰋊"
+    },
+    "clock": {
+        "timezone": "",
+        "format": "{:%H:%M}"
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "tooltip": false
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "pulseaudio": {
+        "scroll-step": 5, // %, can be a float
+        "format": "{volume}% {icon}",
+        "format-muted": " {format_source}",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pipewire"
+    }
+}
