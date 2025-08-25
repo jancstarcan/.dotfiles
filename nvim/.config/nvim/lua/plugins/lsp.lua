@@ -123,7 +123,6 @@ return {
 		local lspconfig = require("lspconfig")
 
 		lspconfig.jdtls.setup({
-			cmd = { "jdtls" },
 			root_dir = lspconfig.util.root_pattern("gradlew", ".git", "build.gradle"),
 		})
 		require("lspconfig").lua_ls.setup {
