@@ -1,4 +1,5 @@
 # Default config for imv
+
 [options]
 
 # Suppress built-in key bindings, and specify them explicitly in this
