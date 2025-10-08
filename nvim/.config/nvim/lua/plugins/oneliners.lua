@@ -3,6 +3,18 @@ return {
 		'tpope/vim-fugitive',
 	},
 	{
+		'numToStr/Comment.nvim',
+		config = function()
+			require'Comment'.setup()
+		end,
+	},
+	{
+		'ray-x/go.nvim',
+		config = function()
+			require'go'.setup()
+		end,
+	},
+	{
 		'brenoprata10/nvim-highlight-colors',
 		config = function()
 			require('nvim-highlight-colors').setup({})

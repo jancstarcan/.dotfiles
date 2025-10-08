@@ -55,3 +55,5 @@ vim.api.nvim_create_user_command("DT", function()
 		signs = not vt,
 	}
 end, { desc = "toggle diagnostic" })
+
+vim.lsp.inlay_hint.enable(false)
