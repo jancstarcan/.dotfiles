@@ -14,6 +14,7 @@ return {
 		"L3MON4D3/LuaSnip",
 		"rafamadriz/friendly-snippets",
 	},
+
 	config = function()
 		if vim.lsp.inlay_hint then
 			vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
@@ -47,18 +48,12 @@ return {
 			vim.lsp.handlers.signature_help,
 			{ border = 'rounded' }
 		)
+
 		vim.lsp.config("lua_ls", {
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" }
-					}
-				}
-			}
+			settings = { Lua = { diagnostics = { globals = { "vim" } } } }
 		})
 
-		-- Add cmp_nvim_lsp capabilities settings to lspconfig
-		-- This should be executed before you configure any language server
+		-- Add cmp_nvim_lsp capabilities before setting up servers
 		local lspconfig_defaults = require('lspconfig').util.default_config
 		lspconfig_defaults.capabilities = vim.tbl_deep_extend(
 			'force',
@@ -66,12 +61,9 @@ return {
 			require('cmp_nvim_lsp').default_capabilities()
 		)
 
-		-- This is where you enable features that only work
-		-- if there is a language server active in the file
 		vim.api.nvim_create_autocmd('LspAttach', {
 			callback = function(event)
 				local opts = { buffer = event.buf }
-
 				vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
 				vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
 				vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
@@ -93,28 +85,34 @@ return {
 
 			if client.supports_method("textDocument/formatting") then
 				vim.api.nvim_create_autocmd("BufWritePre", {
-					group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
-					buffer = bufnr,
+					group = vim.api.nvim_create_augroup("FormatOnSave", { clear = true }),
 					callback = function()
-						vim.lsp.buf.format()
+						local ft = vim.bo.filetype
+						if ft == "c" or ft == "cpp" then
+							-- Use clang-format for C/C++
+							vim.cmd("silent! !clang-format -i %")
+							vim.cmd("edit") -- reload buffer to reflect changes
+						elseif vim.lsp.buf.server_ready() then
+							-- For all other languages, use LSP formatting
+							vim.lsp.buf.format({ async = false })
+						end
 					end,
 				})
 			end
 		end
 
 		require('mason').setup({})
-		require('mason-lspconfig').setup({
-			ensure_installed = {
-			},
-			handlers = {
-				-- this first function is the "default handler"
-				-- it applies to every language server without a custom handler
-				function(server_name)
-					require('lspconfig')[server_name].setup({
-						on_attach = on_attach
-					})
-				end,
 
+		require('mason-lspconfig').setup({
+			ensure_installed = {},
+			handlers = {
+				-- Default handler, applies to all servers except the ones we skip
+				function(server_name)
+					if server_name == "clangd" or server_name == "lua_ls" or server_name == "jdtls" then
+						return
+					end
+					require('lspconfig')[server_name].setup({ on_attach = on_attach })
+				end,
 			},
 		})
 
@@ -123,50 +121,52 @@ return {
 		lspconfig.jdtls.setup({
 			root_dir = lspconfig.util.root_pattern("gradlew", ".git", "build.gradle"),
 		})
+
 		lspconfig.lua_ls.setup {
 			settings = {
 				Lua = {
-					diagnostics = {
-						globals = { "vim" }, -- so it doesn’t complain about vim
-					},
+					diagnostics = { globals = { "vim" } },
 				},
 			},
 		}
 
+		-- clangd setup (fixed duplication and config)
 		lspconfig.clangd.setup {
 			cmd = {
 				"clangd",
 				"--header-insertion=never",
 				"--inlay-hints=false",
+				"--fallback-style=file",
 			},
 			on_attach = on_attach,
+			capabilities = require('cmp_nvim_lsp').default_capabilities(),
 			settings = {
 				clangd = {
 					InlayHints = {
 						ParameterNames = false,
 						DeductedType = false,
-					}
-				}
-			}
+					},
+				},
+			},
 		}
 
 		require('luasnip.loaders.from_vscode').lazy_load()
-
 		vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
-		--Autocompletion config (cmp)
+		-- Autocompletion config (cmp)
 		local cmp = require("cmp")
 		require("luasnip.loaders.from_vscode").lazy_load()
+
 		cmp.setup({
 			snippet = {
 				expand = function(args)
 					require("luasnip").lsp_expand(args.body)
-				end
+				end,
 			},
 			preselect = "item",
 			completion = {
 				autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
-				completeopt = "menu,menuone,noinsert"
+				completeopt = "menu,menuone,noinsert",
 			},
 			window = {
 				documentation = cmp.config.window.bordered(),
@@ -183,10 +183,7 @@ return {
 				["<C-b>"] = cmp.mapping.scroll_docs(-4),
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 				["<C-Space>"] = cmp.mapping.complete(),
-				["<C-e>"] = cmp.mapping {
-					i = cmp.mapping.abort(),
-					c = cmp.mapping.close()
-				},
+				["<C-e>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
 				["<CR>"] = cmp.mapping.confirm({ select = true }),
 				["<Tab>"] = cmp.mapping(function(fallback)
 					local luasnip = require("luasnip")
@@ -195,7 +192,7 @@ return {
 					else
 						fallback()
 					end
-				end, { "i", "s", }),
+				end, { "i", "s" }),
 				["<S-Tab>"] = cmp.mapping(function(fallback)
 					local luasnip = require("luasnip")
 					if cmp.visible() then
@@ -203,8 +200,8 @@ return {
 					else
 						fallback()
 					end
-				end, { "i", "s" })
+				end, { "i", "s" }),
 			}),
 		})
-	end
+	end,
 }
