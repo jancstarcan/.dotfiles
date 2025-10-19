@@ -9,8 +9,6 @@ export LFS="/mnt/lfs"
 
 alias lg="lazygit"
 alias se="sudoedit"
-alias cd="z"
-alias v="nvim"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

@@ -55,10 +55,10 @@ input type:pointer {
 		natural_scroll disabled
 		dwt disabled
 		accel_profile "flat"
-		pointer_accel 0.5
+		pointer_accel 0
 }
 ### Gaps
-gaps inner 10
+gaps inner 5
 default_border pixel
 
 ### Key bindings
@@ -67,6 +67,7 @@ default_border pixel
 #
 	# Reload Waybar
 	bindsym $mod+r+Shift exec ~/.scripts/reloadwaybar.sh
+
 	# Screenshots
 	bindsym $mod+p exec ~/.scripts/screenshot.sh area
 	bindsym $mod+p+Shift exec ~/.scripts/screenshot.sh active

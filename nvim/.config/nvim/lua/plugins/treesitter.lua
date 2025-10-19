@@ -3,27 +3,25 @@ return {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
-            local configs = require("nvim-treesitter.configs")
+            local ts_ok, configs = pcall(require, "nvim-treesitter.configs")
+            if not ts_ok then return end
+
             configs.setup({
-                -- enable syntax highlighting
-                highlight = {
-                    enable = true,
-                },
-                -- enable indentation
+                highlight = { enable = true },
                 indent = { enable = true },
-                -- enable autotagging (w/ nvim-ts-autotag plugin)
                 autotag = { enable = true },
-                -- ensure these language parsers are installed
                 ensure_installed = {
                     "html",
                     "css",
                     "javascript",
                     "python",
-					"nix",
+					"java",
+					"c",
+					"cpp",
+					"typst"
                 },
-                -- auto install above language parsers
                 auto_install = false,
             })
-        end
-    }
+        end,
+    },
 }

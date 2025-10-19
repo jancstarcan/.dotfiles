@@ -1,8 +1,5 @@
 return {
 	{
-		'tpope/vim-fugitive',
-	},
-	{
 		'numToStr/Comment.nvim',
 		config = function()
 			require'Comment'.setup()
@@ -27,8 +24,23 @@ return {
 		end
 	},
 	{
-		"windwp/nvim-autopairs",
-		config = true,
+		{
+			"windwp/nvim-autopairs",
+			config = function()
+				local npairs = require('nvim-autopairs')
+				local Rule = require('nvim-autopairs.rule')
+
+				npairs.setup({
+					check_ts = true,
+				})
+
+				npairs.add_rules({
+					Rule("$", "$", "typst"),
+					Rule("*", "*", "typst"),
+					Rule("_", "_", "typst")
+				})
+			end,
+		}
 	},
 	{
 		'folke/noice.nvim',

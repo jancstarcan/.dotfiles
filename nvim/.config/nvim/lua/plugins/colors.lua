@@ -1,17 +1,14 @@
 return {
 	{
 		"ellisonleao/gruvbox.nvim",
-
 		config = function()
-			contrast = "hard",
 			require("gruvbox").setup({
 				contrast = "hard",
-				transparent_mode = true,
+				transparent_mode = false,
 				palette = "warmer",
 			})
-
 			vim.cmd("colorscheme gruvbox")
-		end
+		end,
 	},
 	{
 		"nvim-lualine/lualine.nvim",
@@ -19,7 +16,7 @@ return {
 			"nvim-tree/nvim-web-devicons",
 		},
 		opts = {
-			"gruvbox"
-		}
+			options = { theme = "gruvbox" },
+		},
 	},
 }

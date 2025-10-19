@@ -17,16 +17,19 @@ dynamic_padding yes
 
 confirm_os_window_close 0
 
+# fix for gentoo
+# shell fish
+
 # highlighting
 selection_foreground #ebdbb2
 selection_background #665c54
 
 # basic colors
 foreground              #ebdbb2
-background              #1d2021
+background              #0a0a0a
 selection_foreground    #ebdbb2
 selection_background    #665c54
-background_opacity 1
+background_opacity 0.8
 
 # cursor colors
 cursor                  #fabd2f
