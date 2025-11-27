@@ -14,12 +14,18 @@ return {
 			"rafamadriz/friendly-snippets",
 		},
 		config = function()
+			local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
+			if not lspconfig_ok then
+				vim.notify("nvim-lspconfig not found!", vim.log.levels.ERROR)
+				return
+			end
+
 			local mason_ok, mason = pcall(require, "mason")
 			if mason_ok then mason.setup({}) end
 
 			local mason_lsp_ok, mason_lsp = pcall(require, "mason-lspconfig")
 			if mason_lsp_ok then
-				mason_lsp.setup({ ensure_installed = { "jdtls" } })
+				mason_lsp.setup({ ensure_installed = { "clangd", "jdtls" } })
 			end
 
 			local cmp_lsp_ok, cmp_lsp = pcall(require, "cmp_nvim_lsp")
@@ -44,6 +50,7 @@ return {
 				vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts)
 				vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
 
+
 				local function format_buffer()
 					local ft = vim.bo[bufnr].filetype
 					local filepath = vim.fn.expand("%:p")
@@ -62,15 +69,15 @@ return {
 						vim.lsp.buf.format({ async = false })
 					end
 				end
-
 				vim.keymap.set({ "n", "x" }, "<F3>", format_buffer, opts)
-
 				if client.supports_method("textDocument/formatting") then
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = vim.api.nvim_create_augroup("FormatOnSaveMixed", { clear = false }),
-						buffer = bufnr,
-						callback = format_buffer,
-					})
+					vim.api.nvim_create_autocmd("BufWritePre",
+						{
+							group = vim.api.nvim_create_augroup("FormatOnSaveMixed", { clear = false }),
+							buffer = bufnr,
+							callback =
+								format_buffer,
+						})
 				end
 			end
 
@@ -98,7 +105,7 @@ return {
 				clangd = {
 					on_attach = on_attach,
 					capabilities = capabilities,
-					cmd = { "clangd" },
+					cmd = { "clangd", "--header-insertion=never", "--inlay-hints=false", "--fallback-style=file" },
 					settings = {
 						clangd = {
 							InlayHints = {
@@ -113,7 +120,7 @@ return {
 				jdtls = {
 					on_attach = on_attach,
 					capabilities = capabilities,
-					root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "build.gradle" }, { upward = true })[1]),
+					root_dir = lspconfig.util.root_pattern("gradlew", ".git", "build.gradle"),
 				},
 				gopls = {
 					on_attach = on_attach,
@@ -135,40 +142,16 @@ return {
 						},
 					},
 				},
-				["asm-lsp"] = {
+				{
 					on_attach = on_attach,
 					capabilities = capabilities,
 					cmd = { "asm-lsp --nasm" },
 					filetypes = { "asm", "nasm" },
-				},
-				rust_analyzer = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-					settings = {
-						["rust-analyzer"] = {
-							cargo = {
-								allFeatures = true,
-							},
-							procMacro = {
-								enable = true,
-							},
-							diagnostics = {
-								enable = true,
-								disabled = { "unresolved-proc-macro" },
-							},
-							formatting = {
-								enable = true,
-							},
-							inlayHints = {
-								enabled = true,
-							},
-						},
-					},
 				}
 			}
 
 			for name, config in pairs(servers) do
-				vim.lsp.config(name, config)
+				lspconfig[name].setup(config)
 			end
 
 			local luasnip_ok, luasnip = pcall(require, "luasnip")
@@ -218,5 +201,5 @@ return {
 
 			vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 		end,
-	}
+	},
 }

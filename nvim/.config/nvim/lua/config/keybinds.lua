@@ -12,14 +12,25 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set({ "n", "v", "x" }, "<leader>d", '"+p')
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y')
 
+-- Add newline
+vim.keymap.set("i", "<S-CR>", "o")
+vim.keymap.set("n", "<S-CR>", "o")
+
+-- Indent whole file
+vim.keymap.set("n", "<leader>=", "gg=G<C-o>")
+
+-- Center line
+vim.keymap.set("n", "<C-z>", "zz")
+vim.keymap.set("i", "<C-z>", "<C-o>zz")
+
 -- Open pdf with current file name
 local function open_pdf()
-  local pdffile = vim.fn.expand("%:r") .. ".pdf"
+	local pdffile = vim.fn.expand("%:r") .. ".pdf"
 
-  vim.fn.system("pkill -f zathura")
+	vim.fn.system("pkill -f zathura")
 
-  vim.fn.system("zathura " .. pdffile .. " & disown")
-  print("Opened PDF: " .. pdffile)
+	vim.fn.system("zathura " .. pdffile .. " & disown")
+	print("Opened PDF: " .. pdffile)
 end
 vim.keymap.set("n", "<leader>v", open_pdf, { noremap = true, silent = true })
 

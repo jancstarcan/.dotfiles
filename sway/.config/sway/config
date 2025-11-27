@@ -57,6 +57,11 @@ input type:pointer {
 		accel_profile "flat"
 		pointer_accel 0
 }
+
+input "type:keyboard" {
+    xkb_layout us,it,si
+    xkb_options "grp:alt_shift_space,grp:win_space_toggle"
+}
 ### Gaps
 gaps inner 5
 default_border pixel

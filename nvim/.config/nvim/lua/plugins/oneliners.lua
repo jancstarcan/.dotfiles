@@ -2,13 +2,13 @@ return {
 	{
 		'numToStr/Comment.nvim',
 		config = function()
-			require'Comment'.setup()
+			require 'Comment'.setup()
 		end,
 	},
 	{
 		'ray-x/go.nvim',
 		config = function()
-			require'go'.setup()
+			require 'go'.setup()
 		end,
 	},
 	{
@@ -28,16 +28,9 @@ return {
 			"windwp/nvim-autopairs",
 			config = function()
 				local npairs = require('nvim-autopairs')
-				local Rule = require('nvim-autopairs.rule')
 
 				npairs.setup({
 					check_ts = true,
-				})
-
-				npairs.add_rules({
-					Rule("$", "$", "typst"),
-					Rule("*", "*", "typst"),
-					Rule("_", "_", "typst")
 				})
 			end,
 		}
@@ -56,9 +49,7 @@ return {
 	{
 		'ggandor/leap.nvim',
 		config = function()
-			require('leap').add_default_mappings()
-			vim.keymap.set({'n', 'x', 'o'}, '<leader>s', '<Plug>(leap)')
-			vim.keymap.set('n', '<leader>S', '<Plug>(leap-from-window)')
+			vim.keymap.set({ 'n', 'x', 'o' }, '<leader>s', '<Plug>(leap)')
 		end,
 	},
 	{
