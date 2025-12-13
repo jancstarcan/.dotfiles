@@ -19,9 +19,16 @@ vim.keymap.set("n", "<S-CR>", "o")
 -- Indent whole file
 vim.keymap.set("n", "<leader>=", "gg=G<C-o>")
 
--- Center line
+-- Center view
 vim.keymap.set("n", "<C-z>", "zz")
 vim.keymap.set("i", "<C-z>", "<C-o>zz")
+
+-- Better C-d and C-u
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Terminal
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 
 -- Open pdf with current file name
 local function open_pdf()

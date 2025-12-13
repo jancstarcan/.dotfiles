@@ -8,6 +8,7 @@ export SUDO_EDITOR="nvim"
 
 alias lg="lazygit"
 alias se="sudoedit"
+alias pyenv="source $HOME/pyenv/bin/activate"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

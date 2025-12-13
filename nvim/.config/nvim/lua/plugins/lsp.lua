@@ -135,11 +135,26 @@ return {
 						},
 					},
 				},
+				pyright = {
+					on_attach = on_attach,
+					capabilities = capabilities,
+					settings = {
+						analysis = {
+							typeCheckingMode = "basic",
+							reportWildcardImport = false,
+							reportUnusedImport = false,
+						},
+					},
+				},
 				["asm-lsp"] = {
 					on_attach = on_attach,
 					capabilities = capabilities,
 					cmd = { "asm-lsp --nasm" },
 					filetypes = { "asm", "nasm" },
+				},
+				asmfmt = {
+					on_attach = on_attach,
+					capabilities = capabilities,
 				},
 				rust_analyzer = {
 					on_attach = on_attach,

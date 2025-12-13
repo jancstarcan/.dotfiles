@@ -19,14 +19,10 @@
       "sway/window"
     ],
     "modules-left": [
-      "clock",
       "sway/workspaces"
     ],
     "modules-right": [
-      "cpu",
-      "memory",
-      "disk",
-      "pulseaudio"
+      "clock"
     ],
     "output": [
       "DP-1",
