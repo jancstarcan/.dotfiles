@@ -10,6 +10,8 @@ alias lg="lazygit"
 alias se="sudoedit"
 alias pyenv="source $HOME/pyenv/bin/activate"
 
+export PATH="$HOME/.config/emacs/bin:$PATH"
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -34,7 +36,7 @@ ZSH_THEME="mytheme"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).

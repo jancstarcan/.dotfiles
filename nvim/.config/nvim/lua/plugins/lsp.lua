@@ -99,16 +99,6 @@ return {
 					on_attach = on_attach,
 					capabilities = capabilities,
 					cmd = { "clangd" },
-					settings = {
-						clangd = {
-							InlayHints = {
-								Designators = false,
-								Enabled = false,
-								ParameterNames = false,
-								DeducedTypes = false,
-							}
-						}
-					},
 				},
 				jdtls = {
 					on_attach = on_attach,
@@ -132,17 +122,6 @@ return {
 							background = {
 								enabled = false,
 							},
-						},
-					},
-				},
-				pyright = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-					settings = {
-						analysis = {
-							typeCheckingMode = "basic",
-							reportWildcardImport = false,
-							reportUnusedImport = false,
 						},
 					},
 				},

@@ -24,16 +24,14 @@ return {
 		end
 	},
 	{
-		{
-			"windwp/nvim-autopairs",
-			config = function()
-				local npairs = require('nvim-autopairs')
+		"windwp/nvim-autopairs",
+		config = function()
+			local npairs = require('nvim-autopairs')
 
-				npairs.setup({
-					check_ts = true,
-				})
-			end,
-		}
+			npairs.setup({
+				check_ts = true,
+			})
+		end,
 	},
 	{
 		'folke/noice.nvim',
@@ -58,6 +56,10 @@ return {
 		opts = {},
 		config = function()
 			require("ibl").setup({
+				debounce = 100,
+				indent = { char = "│" },
+				scope = { enabled = false },
+				whitespace = { highlight = { "Whitespace", "NonText" } },
 			})
 		end,
 	},
@@ -66,5 +68,11 @@ return {
 		lazy = false,
 		version = '1.*',
 		opts = {},
+	},
+	{
+		"mbbill/undotree",
+		config = function()
+			vim.keymap.set('n', '<F5>', vim.cmd.UndotreeToggle)
+		end
 	},
 }

@@ -15,9 +15,9 @@
     "memory": {
       "format": "{}% "
     },
-    "modules-center": [
-      "sway/window"
-    ],
+    // "modules-center": [
+    //   "sway/window"
+    // ],
     "modules-left": [
       "sway/workspaces"
     ],
