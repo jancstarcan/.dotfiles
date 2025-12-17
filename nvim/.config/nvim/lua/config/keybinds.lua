@@ -23,10 +23,6 @@ vim.keymap.set("n", "<leader>=", "gg=G<C-o>")
 vim.keymap.set("n", "<C-z>", "zz")
 vim.keymap.set("i", "<C-z>", "<C-o>zz")
 
--- Better C-d and C-u
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
 -- Terminal
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 

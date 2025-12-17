@@ -63,6 +63,7 @@ return {
 					end
 				end
 
+				vim.keymap.set({ "n", "x" }, "<leader>f", format_buffer, opts)
 				vim.keymap.set({ "n", "x" }, "<F3>", format_buffer, opts)
 
 				if client.supports_method("textDocument/formatting") then
