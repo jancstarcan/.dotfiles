@@ -19,7 +19,7 @@ set $term wezterm
 # Your preferred application launcher
 set $menu wofi
 # Your preferred browser
-set $browser firefox
+set $browser zen-browser
 # Monitors
 set $monitor1 DP-1
 set $monitor2 HDMI-A-1
@@ -63,7 +63,7 @@ input type:pointer {
 #     xkb_options "grp:alt_shift_space,grp:win_space_toggle"
 # }
 ### Gaps
-gaps inner 5
+gaps inner 0
 default_border pixel
 
 ### Key bindings

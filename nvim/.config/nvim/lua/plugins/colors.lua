@@ -13,13 +13,15 @@ return {
 		config = function()
 			require("gruvbox").setup({
 				contrast = "hard",
-				transparent_mode = false,
+				transparent_mode = true,
 				palette = "warmer",
 			})
-			vim.cmd("colorscheme codedark")
+			vim.cmd("colorscheme vscode")
 		end,
 	},
 	{ "catppuccin/nvim",            name = "catppuccin", priority = 1000 },
+	{ "Mofiqul/vscode.nvim" },
 	{ "tomasiser/vim-code-dark" },
+	{ "bruth/vim-newsprint-theme" },
 	{ "marko-cerovac/material.nvim" },
 }

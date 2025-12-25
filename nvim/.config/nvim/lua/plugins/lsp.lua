@@ -19,7 +19,7 @@ return {
 
 			local mason_lsp_ok, mason_lsp = pcall(require, "mason-lspconfig")
 			if mason_lsp_ok then
-				mason_lsp.setup({ ensure_installed = { "jdtls" } })
+				mason_lsp.setup({ ensure_installed = {} })
 			end
 
 			local cmp_lsp_ok, cmp_lsp = pcall(require, "cmp_nvim_lsp")
@@ -31,7 +31,7 @@ return {
 			local on_attach = function(client, bufnr)
 				local opts = { buffer = bufnr, noremap = true, silent = true }
 
-				vim.lsp.inlay_hint.enable(false)
+				vim.lsp.inlay_hint.enable(false);
 
 				vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 				vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -45,7 +45,7 @@ return {
 				vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
 
 				local function format_buffer()
-					local ft = vim.bo[bufnr].filetype
+					--[[ local ft = vim.bo[bufnr].filetype
 					local filepath = vim.fn.expand("%:p")
 
 					if ft == "c" or ft == "cpp" or ft == "h" or ft == "hpp" then
@@ -60,7 +60,7 @@ return {
 						})
 					else
 						vim.lsp.buf.format({ async = false })
-					end
+					end ]]
 				end
 
 				vim.keymap.set({ "n", "x" }, "<leader>f", format_buffer, opts)
@@ -76,14 +76,6 @@ return {
 			end
 
 			local servers = {
-				cssls = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-				},
-				ts_ls = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-				},
 				jsonls = {
 					on_attach = on_attach,
 					capabilities = capabilities,
@@ -92,19 +84,10 @@ return {
 					on_attach = on_attach,
 					capabilities = capabilities,
 				},
-				html = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-				},
 				clangd = {
 					on_attach = on_attach,
 					capabilities = capabilities,
 					cmd = { "clangd" },
-				},
-				jdtls = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-					root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "build.gradle" }, { upward = true })[1]),
 				},
 				gopls = {
 					on_attach = on_attach,
@@ -125,16 +108,6 @@ return {
 							},
 						},
 					},
-				},
-				["asm-lsp"] = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-					cmd = { "asm-lsp --nasm" },
-					filetypes = { "asm", "nasm" },
-				},
-				asmfmt = {
-					on_attach = on_attach,
-					capabilities = capabilities,
 				},
 				rust_analyzer = {
 					on_attach = on_attach,
@@ -199,7 +172,6 @@ return {
 						["<C-b>"] = cmp.mapping.scroll_docs(-4),
 						["<C-f>"] = cmp.mapping.scroll_docs(4),
 						["<C-Space>"] = cmp.mapping.complete(),
-						["<C-e>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
 						["<CR>"] = cmp.mapping.confirm({ select = true }),
 						["<Tab>"] = cmp.mapping(function(fallback)
 							if cmp.visible() then cmp.select_next_item() else fallback() end

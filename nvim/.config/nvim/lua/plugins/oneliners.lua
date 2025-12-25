@@ -35,9 +35,12 @@ return {
 	},
 	{
 		'folke/noice.nvim',
-		dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+		dependencies = { "MunifTanjim/nui.nvim" },
 		config = function()
 			require("noice").setup({
+				notify = {
+					enabled = false,
+				},
 				messages = {
 					opts = { timeout = 0 },
 				},
@@ -57,7 +60,7 @@ return {
 		config = function()
 			require("ibl").setup({
 				debounce = 100,
-				indent = { char = "│" },
+				indent = { char = "▏" },
 				scope = { enabled = false },
 				whitespace = { highlight = { "Whitespace", "NonText" } },
 			})
