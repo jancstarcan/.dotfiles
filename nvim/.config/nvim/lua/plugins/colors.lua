@@ -5,7 +5,7 @@ return {
 			"nvim-tree/nvim-web-devicons",
 		},
 		opts = {
-			options = { theme = "codedark" },
+			options = { theme = "vscode" },
 		},
 	},
 	{
@@ -20,8 +20,13 @@ return {
 		end,
 	},
 	{ "catppuccin/nvim",            name = "catppuccin", priority = 1000 },
-	{ "Mofiqul/vscode.nvim" },
 	{ "tomasiser/vim-code-dark" },
-	{ "bruth/vim-newsprint-theme" },
 	{ "marko-cerovac/material.nvim" },
+	{ "Mofiqul/vscode.nvim", },
+	{
+		"blazkowolf/gruber-darker.nvim",
+		opts = {
+			bold = true,
+		},
+	}
 }

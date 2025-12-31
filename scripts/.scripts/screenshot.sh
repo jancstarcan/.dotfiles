@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 usage() {
   echo "Usage: $0 {full|area|active}"

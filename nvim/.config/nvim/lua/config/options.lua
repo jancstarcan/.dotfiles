@@ -8,6 +8,10 @@ vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.guifont = "JetBrains:h20"
+
+vim.opt.undofile = true;
+vim.opt.undodir = vim.fn.expand("~/.undodir//");
 
 vim.opt.guicursor = "n-v-c:block"
 

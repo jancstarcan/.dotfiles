@@ -45,7 +45,7 @@ return {
 				vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
 
 				local function format_buffer()
-					--[[ local ft = vim.bo[bufnr].filetype
+					local ft = vim.bo[bufnr].filetype
 					local filepath = vim.fn.expand("%:p")
 
 					if ft == "c" or ft == "cpp" or ft == "h" or ft == "hpp" then
@@ -60,19 +60,19 @@ return {
 						})
 					else
 						vim.lsp.buf.format({ async = false })
-					end ]]
+					end
 				end
 
-				vim.keymap.set({ "n", "x" }, "<leader>f", format_buffer, opts)
+				vim.keymap.set({ "n", "x" }, "<leader>c", format_buffer, opts)
 				vim.keymap.set({ "n", "x" }, "<F3>", format_buffer, opts)
 
-				if client.supports_method("textDocument/formatting") then
+				--[[ if client.supports_method("textDocument/formatting") then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						group = vim.api.nvim_create_augroup("FormatOnSaveMixed", { clear = false }),
 						buffer = bufnr,
 						callback = format_buffer,
 					})
-				end
+				end ]]
 			end
 
 			local servers = {
@@ -106,6 +106,16 @@ return {
 							background = {
 								enabled = false,
 							},
+						},
+					},
+				},
+				zls = {
+					on_attach = on_attach,
+					capabilities = capabilities,
+					settings = {
+						zig = {
+							formatting = true,
+							inlayHints = false,
 						},
 					},
 				},

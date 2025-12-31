@@ -10,7 +10,7 @@ alias lg="lazygit"
 alias se="sudoedit"
 alias pyenv="source $HOME/pyenv/bin/activate"
 
-export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.local/share/zig-x86_64-0.16.0-dev:$PATH"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
