@@ -9,8 +9,10 @@
    '("e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7"
 	 default))
  '(package-selected-packages
-   '(autothemer company expand-region gruber-darker-theme move-text
-				multiple-cursors vterm)))
+   '(autothemer company expand-region f gruber-darker-theme ht lv
+				magit-section markdown-mode move-text multiple-cursors
+				spinner transient tree-sitter tree-sitter-langs vterm
+				with-editor)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

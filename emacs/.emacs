@@ -67,6 +67,10 @@
   :ensure t
   :bind ("C-=" . er/expand-region))
 
+(load-file "~/.emacs.d/c3-ts-mode.el")
+(setq c3-ts-mode-indent-offset 4)
+(setq treesit-font-lock-level 4)
+
 (use-package eglot
   :ensure t
   :hook ((c-mode . eglot-ensure)
