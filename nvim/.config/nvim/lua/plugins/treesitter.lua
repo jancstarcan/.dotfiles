@@ -1,6 +1,7 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		build = ":TSUpdate",
 		config = function()
 			local ts_ok, configs = pcall(require, "nvim-treesitter.configs")
@@ -16,7 +17,7 @@ return {
 					"c",
 					"cpp",
 					"rust",
-					"typst"
+					"typst",
 				},
 				auto_install = false,
 			})

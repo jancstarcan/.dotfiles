@@ -1,18 +1,15 @@
-(setq custom-file "~/.custom")
+;; -*- lexical-binding: t; -*-
+(setq custom-file "~/.custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+(setq load-prefer-newer t)
+(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-(add-to-list 'default-frame-alist '(font . "Iosevka-20"))
+(add-to-list 'default-frame-alist '(font . "Iosevka-18"))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -20,6 +17,7 @@
 (electric-indent-mode 1)
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
+(setq vc-follow-symlinks t)
 
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
@@ -29,7 +27,6 @@
 (ido-mode 1)
 (ido-everywhere 1)
 
-(setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -45,14 +42,26 @@
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
 (global-set-key (kbd "C-c C-f") #'eglot-format-buffer)
 
-(require 'move-text)
-(move-text-default-bindings)
+(global-set-key (kbd "C-c c") 'compile)
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
 
-(use-package smartparens
-  :ensure t
-  :config
-  (smartparens-global-mode 1)
-  (show-smartparens-global-mode 1))
+(global-set-key (kbd "C-c C-d") 'duplicate-line)
+
+(use-package vterm
+  :ensure t)
+
+(use-package move-text
+  :ensure t)
+(global-set-key (kbd "M-p") 'move-text-up)
+(global-set-key (kbd "M-n") 'move-text-down)
 
 (use-package expand-region
   :ensure t
@@ -70,7 +79,7 @@
             :completionStyle "detailed"
             :pchStorage "memory")))))
 
-(setq eglot-events-buffer-size 0)
+(setq eglot-events-buffer-config 0)
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
             (eglot-inlay-hints-mode -1)))
@@ -91,7 +100,7 @@
   (setq company-idle-delay nil
         company-minimum-prefix-length 9999)
 
-  (setq company-auto-complete nil)
+  (setq company-insertion-on-trigger nil)
   (global-company-mode 1)
   (global-set-key (kbd "C-c C-SPC") #'company-complete))
 

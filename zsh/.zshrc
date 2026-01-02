@@ -9,8 +9,7 @@ export SUDO_EDITOR="nvim"
 alias lg="lazygit"
 alias se="sudoedit"
 alias pyenv="source $HOME/pyenv/bin/activate"
-
-export PATH="$HOME/.local/share/zig-x86_64-0.16.0-dev:$PATH"
+alias sybau="sudo pacman -Syu"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

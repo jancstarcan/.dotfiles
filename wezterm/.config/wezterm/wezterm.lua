@@ -6,11 +6,11 @@ return {
 
 	-- Font
 	font = wezterm.font {
-		-- family = 'JetBrains Mono Nerd Font',
-		family = 'Iosevka',
+		family = 'JetBrains Mono Nerd Font',
+		-- family = 'Iosevka',
 		weight = 'Medium',
 	},
-	font_size = 16.0,
+	font_size = 14.0,
 
 	custom_block_glyphs = false,
 	window_background_opacity = 0.7,

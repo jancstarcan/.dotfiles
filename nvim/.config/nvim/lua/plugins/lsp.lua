@@ -119,6 +119,11 @@ return {
 						},
 					},
 				},
+				c3lsp = {
+					on_attach = on_attach,
+					capabilities = capabilities,
+					cmd = { "c3lsp" },
+				},
 				rust_analyzer = {
 					on_attach = on_attach,
 					capabilities = capabilities,
@@ -142,7 +147,7 @@ return {
 							},
 						},
 					},
-				}
+				},
 			}
 
 			for name, config in pairs(servers) do
