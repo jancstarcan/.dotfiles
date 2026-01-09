@@ -9,9 +9,10 @@
    '("e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7"
 	 default))
  '(package-selected-packages
-   '(autothemer company expand-region f gruber-darker-theme ht lv
-				magit-section markdown-mode move-text multiple-cursors
-				spinner transient tree-sitter tree-sitter-langs vterm
+   '(autothemer company eldoc-box expand-region f gruber-darker-theme ht
+				ido-completing-read+ ligature lv magit-section
+				markdown-mode move-text multiple-cursors rainbow-mode
+				spinner transient tree-sitter-langs undo-fu vterm
 				with-editor)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

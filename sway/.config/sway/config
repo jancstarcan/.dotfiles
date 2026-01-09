@@ -5,6 +5,7 @@
 # Read `man 5 sway` for a complete reference.
 
 font pango: JetBrains Mono Nerd Font Medium 10
+seat seat0 xcursor_theme Adwaita 24
 
 # Startup commands
 exec swww-daemon
@@ -21,7 +22,7 @@ set $term wezterm
 # Your preferred application launcher
 set $menu wofi
 # Your preferred browser
-set $browser zen-browser
+set $browser firefox
 # Monitors
 set $monitor1 DP-1
 set $monitor2 HDMI-A-1

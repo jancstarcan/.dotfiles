@@ -3,13 +3,13 @@
   (load custom-file))
 (setq load-prefer-newer t)
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-save/" t)))
+(setq auto-save-d
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-18"))
+(add-to-list 'default-frame-alist '(font . "Iosevka-18"))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -18,19 +18,14 @@
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (setq vc-follow-symlinks t)
-(setq dired-dwim-target t)
 
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
-(use-package ido-completing-read+
-  :ensure t)
-
 (ido-mode 1)
 (ido-everywhere 1)
-(ido-ubiquitous-mode 1)
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
@@ -46,15 +41,8 @@
 (global-set-key (kbd "M-,") #'xref-find-references)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
 (global-set-key (kbd "C-c C-f") #'eglot-format-buffer)
-(global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
-(global-set-key (kbd "C-c h") #'eldoc-doc-buffer)
-
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c C-n")
-    #'dired-create-empty-file))
 
 (global-set-key (kbd "C-c c") 'compile)
-
 (defun duplicate-line()
   (interactive)
   (move-beginning-of-line 1)
@@ -65,18 +53,15 @@
   (yank)
 )
 
-(global-unset-key (kbd "C-z"))
-(global-set-key (kbd "C-z") 'duplicate-line)
+(global-set-key (kbd "C-c C-d") 'duplicate-line)
+
+(use-package vterm
+  :ensure t)
 
 (use-package move-text
   :ensure t)
-
 (global-set-key (kbd "M-p") 'move-text-up)
 (global-set-key (kbd "M-n") 'move-text-down)
-
-(use-package rainbow-mode
-  :ensure t
-  :hook ((prog-mode css-mode html-mode) . rainbow-mode))
 
 (use-package expand-region
   :ensure t
@@ -90,8 +75,7 @@
   :ensure t
   :hook ((c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
-		 (lisp-mode . eglot-ensure)
-		 (nasm-mode . eglost-ensure))
+		 (lisp-mode . eglot-ensure))
   :config
   (setq eglot-workspace-configuration
         '((:clangd .
@@ -100,13 +84,17 @@
             :pchStorage "memory")))))
 
 (setq eglot-events-buffer-config 0)
-
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
             (eglot-inlay-hints-mode -1)))
-(add-hook 'eglot-managed-mode-hook
+
+(add-hook 'c-mode-hook
           (lambda ()
-            (flymake-mode -1)))
+            (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
 
 (global-set-key (kbd "C-c d") #'flymake-show-buffer-diagnostics)
 
@@ -122,8 +110,3 @@
 
 (with-eval-after-load 'company
   (setq company-backends '(company-capf)))
-
-(use-package eldoc-box
-  :ensure t
-  :config
-  (setq eldoc-box-clear-with-C-g t))
