@@ -90,6 +90,7 @@
   :ensure t
   :hook ((c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
+		 (lua-ts-mode . eglot-ensure)
 		 (lisp-mode . eglot-ensure)
 		 (nasm-mode . eglost-ensure))
   :config

@@ -73,9 +73,7 @@ default_border pixel
 	# bindsym $mod+r+Shift exec ~/.scripts/reloadwaybar.sh
 
 	# Screenshots
-	bindsym $mod+p exec ~/.scripts/screenshot.sh area
-	bindsym $mod+p+Shift exec ~/.scripts/screenshot.sh active
-	bindsym $mod+p+Shift+Control exec ~/.scripts/screenshot.sh full
+	bindsym $mod+p exec flameshot gui
 
     # Start a terminal
     bindsym $mod+Return exec $term

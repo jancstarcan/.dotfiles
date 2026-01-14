@@ -48,19 +48,19 @@ return {
 					local ft = vim.bo[bufnr].filetype
 					local filepath = vim.fn.expand("%:p")
 
---					if ft == "c" or ft == "cpp" or ft == "h" or ft == "hpp" then
---						vim.fn.jobstart({ "clang-format", "-i", filepath }, {
---							on_exit = function()
---								vim.schedule(function()
---									if vim.api.nvim_buf_is_valid(bufnr) then
---										vim.cmd("checktime")
---									end
---								end)
---							end,
---						})
---					else
+					if ft == "c" or ft == "cpp" or ft == "h" or ft == "hpp" then
+						vim.fn.jobstart({ "clang-format", "-i", filepath }, {
+							on_exit = function()
+								vim.schedule(function()
+									if vim.api.nvim_buf_is_valid(bufnr) then
+										vim.cmd("checktime")
+									end
+								end)
+							end,
+						})
+					else
 						vim.lsp.buf.format({ async = false })
---					end
+					end
 				end
 
 				vim.keymap.set({ "n", "x" }, "<leader>c", format_buffer, opts)
