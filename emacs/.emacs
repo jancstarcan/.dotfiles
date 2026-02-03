@@ -1,3 +1,4 @@
+
 (setq custom-file "~/.custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
@@ -19,6 +20,9 @@
 (setq display-line-numbers-type 'relative)
 (setq vc-follow-symlinks t)
 (setq dired-dwim-target t)
+(setq case-replace nil)
+
+(savehist-mode 1)
 
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
@@ -48,12 +52,11 @@
 (global-set-key (kbd "C-c C-f") #'eglot-format-buffer)
 (global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
 (global-set-key (kbd "C-c h") #'eldoc-doc-buffer)
+(global-set-key (kbd "C-c c") 'compile)
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-c C-n")
     #'dired-create-empty-file))
-
-(global-set-key (kbd "C-c c") 'compile)
 
 (defun duplicate-line()
   (interactive)
@@ -71,8 +74,15 @@
 (use-package move-text
   :ensure t)
 
-(global-set-key (kbd "M-p") 'move-text-up)
-(global-set-key (kbd "M-n") 'move-text-down)
+(add-hook 'text-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-p") #'move-text-up)
+            (local-set-key (kbd "M-n") #'move-text-down)))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-p") #'move-text-up)
+            (local-set-key (kbd "M-n") #'move-text-down)))
 
 (use-package rainbow-mode
   :ensure t
@@ -101,6 +111,9 @@
             :pchStorage "memory")))))
 
 (setq eglot-events-buffer-config 0)
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd"))))
 
 (add-hook 'eglot-managed-mode-hook
           (lambda ()

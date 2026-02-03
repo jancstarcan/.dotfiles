@@ -5,6 +5,7 @@ eval "$(zoxide init zsh)"
 
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
+setopt extendedglob
 
 alias lg="lazygit"
 alias se="sudoedit"
