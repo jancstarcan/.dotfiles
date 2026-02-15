@@ -28,6 +28,7 @@
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package ido-completing-read+
   :ensure t)
@@ -39,12 +40,11 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
 (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-,") 'mc/mark-all-like-this)
-
-(global-set-key (kbd "C-x p") 'previous-buffer)
-(global-set-key (kbd "C-x n") 'next-buffer)
 
 (global-set-key (kbd "M-.") #'xref-find-definitions)
 (global-set-key (kbd "M-,") #'xref-find-references)
@@ -58,21 +58,22 @@
   (define-key dired-mode-map (kbd "C-c C-n")
     #'dired-create-empty-file))
 
-(defun duplicate-line()
+(defun duplicate-line ()
   (interactive)
-  (move-beginning-of-line 1)
-  (kill-line)
-  (yank)
-  (open-line 1)
-  (next-line 1)
-  (yank)
-)
+  (save-excursion
+    (let ((text (buffer-substring (line-beginning-position)
+                                  (line-end-position))))
+      (end-of-line)
+      (newline)
+      (insert text))))
+
 
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z") 'duplicate-line)
 
 (use-package move-text
   :ensure t)
+
 
 (add-hook 'text-mode-hook
           (lambda ()
@@ -84,17 +85,22 @@
             (local-set-key (kbd "M-p") #'move-text-up)
             (local-set-key (kbd "M-n") #'move-text-down)))
 
+(use-package expand-region
+  :ensure t)
+
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C--") 'er/contract-region)
+
 (use-package rainbow-mode
   :ensure t
   :hook ((prog-mode css-mode html-mode) . rainbow-mode))
 
-(use-package expand-region
-  :ensure t
-  :bind ("C-=" . er/expand-region))
-
 (load-file "~/.emacs.d/c3-ts-mode.el")
 (setq c3-ts-mode-indent-offset 4)
 (setq treesit-font-lock-level 4)
+
+(use-package glsl-mode
+  :ensure t)
 
 (use-package eglot
   :ensure t
@@ -102,7 +108,8 @@
          (c++-mode . eglot-ensure)
 		 (lua-ts-mode . eglot-ensure)
 		 (lisp-mode . eglot-ensure)
-		 (nasm-mode . eglost-ensure))
+		 (glsl-mode . eglot-ensure)
+		 (nasm-mode . eglot-ensure))
   :config
   (setq eglot-workspace-configuration
         '((:clangd .
