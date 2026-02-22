@@ -56,7 +56,7 @@
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-c C-n")
-    #'dired-create-empty-file))
+			  #'dired-create-empty-file))
 
 (defun duplicate-line ()
   (interactive)
@@ -106,28 +106,21 @@
   :ensure t
   :hook ((c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
+         (csharp-mode . eglot-ensure)
 		 (lua-ts-mode . eglot-ensure)
-		 (lisp-mode . eglot-ensure)
 		 (glsl-mode . eglot-ensure)
 		 (nasm-mode . eglot-ensure))
   :config
-  (setq eglot-workspace-configuration
-        '((:clangd .
-           (:fallbackFlags ["--std=c++23"]
-            :completionStyle "detailed"
-            :pchStorage "memory")))))
+  (setq eglot-stay-out-of '(flymake))
+  (setq eglot-server-programs
+        '(((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd"))
+          ((csharp-mode) . ("omnisharp" "-lsp")))))
 
 (setq eglot-events-buffer-config 0)
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd"))))
 
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
             (eglot-inlay-hints-mode -1)))
-(add-hook 'eglot-managed-mode-hook
-          (lambda ()
-            (flymake-mode -1)))
 
 (global-set-key (kbd "C-c d") #'flymake-show-buffer-diagnostics)
 

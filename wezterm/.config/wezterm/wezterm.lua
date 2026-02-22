@@ -13,7 +13,7 @@ return {
 	font_size = 18.0,
 
 	custom_block_glyphs = false,
-	window_background_opacity = 0.7,
+	window_background_opacity = 1,
 
 	-- Window
 	window_decorations = 'NONE',
@@ -28,8 +28,8 @@ return {
 	-- Colors
 	colors = {
 		foreground = '#abb2bf',
-		background = '#000000',
-		-- background = '#1e1e1e',
+		-- background = '#000000',
+		background = '#1e1e1e',
 
 		cursor_bg = '#fabd2f',
 		cursor_fg = '#282828',
