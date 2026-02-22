@@ -5,26 +5,27 @@
 # Read `man 5 sway` for a complete reference.
 
 # Startup
-exec swww-daemon
+# exec swww-daemon
+exec swaybg -i /home/jan/Wallpapers/wall -m fill &
 
 # font pango: JetBrains Mono Nerd Font Medium 10
 font pango: Iosevka Nerd Font Medium 12
 seat seat0 xcursor_theme Adwaita 24
 
-# Logo key. Use Mod1 for Alt.
+# Use Mod1 for Alt.
 set $mod Mod4
-# Home row direction keys, like vim
+
 set $left h
 set $down j
 set $up k
 set $right l
-# Your preferred terminal emulator
+
 set $term wezterm
-# Your preferred application launcher
 set $menu bemenu-run --fn "Iosevka Nerd Font 16"
-# Your preferred browser
 set $browser firefox
-# Monitors
+set $browserPrivate firefox --private-window
+set $zoom wooz  --zoom-in 35%
+
 set $monitor1 HDMI-A-1
 set $monitor2 DP-1
 
@@ -34,8 +35,8 @@ set $monitor2 DP-1
 #
 # Example configuration:
 #
-output $monitor1 resolution 1920x1080 position 0,0 
-output $monitor2 resolution 1920x1200 position 1920,0
+output $monitor1 res 1920x1080 pos 0,0 
+output $monitor2 res 1920x1200 pos 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -84,6 +85,10 @@ default_border pixel
 
 	#Start your preferred browser
 	bindsym $mod+Shift+w exec $browser
+	bindsym $mod+Shift+Alt+w exec $browserPrivate
+
+	# Zoom in at the cursor
+	bindsym $mod+z exec $zoom
 
 	# Start Emacs :(
 	bindsym $mod+c exec emacs

@@ -23,6 +23,7 @@ return {
 	{ "tomasiser/vim-code-dark" },
 	{ "marko-cerovac/material.nvim" },
 	{ "Mofiqul/vscode.nvim", },
+	{ "y9san9/y9nika.nvim", },
 	{
 		"blazkowolf/gruber-darker.nvim",
 		opts = {
