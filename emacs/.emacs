@@ -45,7 +45,6 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 (when (display-graphic-p)
   (global-set-key (kbd "<escape>") 'ignore))
 
@@ -74,7 +73,6 @@
       (end-of-line)
       (newline)
       (insert text))))
-
 
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z") 'duplicate-line)
