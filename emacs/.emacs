@@ -1,4 +1,3 @@
-
 (setq custom-file "~/.custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
@@ -23,12 +22,18 @@
 (setq case-replace nil)
 
 (savehist-mode 1)
+(repeat-mode 1)
 
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(use-package gruber-darker-theme
+  :ensure t
+  :init
+  (load-theme 'gruber-darker))
 
 (use-package ido-completing-read+
   :ensure t)
@@ -40,7 +45,9 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+(when (display-graphic-p)
+  (global-set-key (kbd "<escape>") 'ignore))
 
 (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
@@ -57,6 +64,7 @@
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-c C-n")
 			  #'dired-create-empty-file))
+(setq dired-listing-switches "-alh")
 
 (defun duplicate-line ()
   (interactive)
@@ -73,7 +81,8 @@
 
 (use-package move-text
   :ensure t)
-
+(use-package multiple-cursors
+  :ensure t)
 
 (add-hook 'text-mode-hook
           (lambda ()
@@ -95,26 +104,53 @@
   :ensure t
   :hook ((prog-mode css-mode html-mode) . rainbow-mode))
 
-(load-file "~/.emacs.d/c3-ts-mode.el")
-(setq c3-ts-mode-indent-offset 4)
-(setq treesit-font-lock-level 4)
-
+(use-package rust-mode
+  :ensure t)
 (use-package glsl-mode
   :ensure t)
+(use-package python-mode
+  :ensure t)
+(use-package markdown-mode
+  :ensure t)
+
+(add-to-list 'major-mode-remap-alist
+             '(rust-mode . rust-ts-mode))
+
+(add-to-list 'major-mode-remap-alist
+             '(c-mode . c-ts-mode))
+(add-hook 'c-ts-mode-hook
+          (lambda ()
+            (setq-local c-ts-mode-indent-offset 4)))
+
+(add-to-list 'major-mode-remap-alist
+             '(c++-mode . c++-ts-mode))
+(add-hook 'c++-ts-mode-hook
+          (lambda ()
+            (setq-local c++-ts-mode-indent-offset 4)))
+
+(setq treesit-language-source-alist
+      '((c "https://github.com/tree-sitter/tree-sitter-c")
+		(rust "https://github.com/tree-sitter/tree-sitter-rust")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
 
 (use-package eglot
   :ensure t
-  :hook ((c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)
+  :hook ((c-ts-mode . eglot-ensure)
+         (c++-ts-mode . eglot-ensure)
          (csharp-mode . eglot-ensure)
-		 (lua-ts-mode . eglot-ensure)
+         (rust-ts-mode . eglot-ensure)
 		 (glsl-mode . eglot-ensure)
-		 (nasm-mode . eglot-ensure))
+		 (python-mode . eglot-ensure))
   :config
   (setq eglot-stay-out-of '(flymake))
-  (setq eglot-server-programs
-        '(((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd"))
-          ((csharp-mode) . ("omnisharp" "-lsp")))))
+  (add-to-list 'eglot-server-programs
+			   '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd")))
+  (add-to-list 'eglot-server-programs
+			   '((csharp-mode) . ("omnisharp" "-lsp")))
+  (add-to-list 'eglot-server-programs
+			   '((python-mode) . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+			   '((rust-mode rust-ts-mode) . ("rust-analyzer"))))
 
 (setq eglot-events-buffer-config 0)
 

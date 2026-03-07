@@ -20,11 +20,11 @@ set $down j
 set $up k
 set $right l
 
-set $term wezterm
+set $term foot
 set $menu bemenu-run --fn "Iosevka Nerd Font 16"
 set $browser firefox
 set $browserPrivate firefox --private-window
-set $zoom wooz  --zoom-in 35%
+set $zoom woomer
 
 set $monitor1 HDMI-A-1
 set $monitor2 DP-1
@@ -35,7 +35,7 @@ set $monitor2 DP-1
 #
 # Example configuration:
 #
-output $monitor1 res 1920x1080 pos 0,0 
+output $monitor1 res 1920x1080 adaptive_sync on pos 0,0
 output $monitor2 res 1920x1200 pos 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
