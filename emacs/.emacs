@@ -15,6 +15,7 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (electric-indent-mode 1)
+(global-visual-line-mode t)
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (setq vc-follow-symlinks t)
@@ -65,6 +66,15 @@
 			  #'dired-create-empty-file))
 (setq dired-listing-switches "-alh")
 
+(use-package magit
+  :ensure t)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "PATH"))
+
 (defun duplicate-line ()
   (interactive)
   (save-excursion
@@ -81,6 +91,10 @@
   :ensure t)
 (use-package multiple-cursors
   :ensure t)
+(use-package wrap-region
+  :ensure t
+  :config
+  (wrap-region-global-mode t))
 
 (add-hook 'text-mode-hook
           (lambda ()
@@ -102,54 +116,85 @@
   :ensure t
   :hook ((prog-mode css-mode html-mode) . rainbow-mode))
 
+(use-package nasm-mode
+  :ensure t)
+
 (use-package rust-mode
   :ensure t)
+
 (use-package glsl-mode
   :ensure t)
+
 (use-package python-mode
   :ensure t)
+
 (use-package markdown-mode
+  :ensure t)
+
+(use-package typst-ts-mode
+  :ensure t)
+
+(use-package typst-preview
+  :ensure t)
+
+(use-package csharp-mode
+  :ensure t)
+
+(use-package csproj-mode
   :ensure t)
 
 (add-to-list 'major-mode-remap-alist
              '(rust-mode . rust-ts-mode))
 
-(add-to-list 'major-mode-remap-alist
-             '(c-mode . c-ts-mode))
-(add-hook 'c-ts-mode-hook
-          (lambda ()
-            (setq-local c-ts-mode-indent-offset 4)))
-
-(add-to-list 'major-mode-remap-alist
-             '(c++-mode . c++-ts-mode))
-(add-hook 'c++-ts-mode-hook
-          (lambda ()
-            (setq-local c++-ts-mode-indent-offset 4)))
+;; (add-to-list 'major-mode-remap-alist
+;;              '(c-mode . c-ts-mode))
+;; (add-hook 'c-ts-mode-hook
+;;           (lambda ()
+;;             (setq-local c-ts-mode-indent-offset 4)))
+;; (add-to-list 'major-mode-remap-alist
+;;              '(c++-mode . c++-ts-mode))
+;; (add-hook 'c++-ts-mode-hook
+;;           (lambda ()
+;;             (setq-local c++-ts-mode-indent-offset 4)))
 
 (setq treesit-language-source-alist
       '((c "https://github.com/tree-sitter/tree-sitter-c")
 		(rust "https://github.com/tree-sitter/tree-sitter-rust")
-        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+		(c3 "https://github.com/c3lang/tree-sitter-c3")
+		(typst "https://github.com/uben0/tree-sitter-typst")
+		(cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+
+(add-to-list 'load-path "~/.emacs.d/c3")
+(require 'c3-ts-mode)
+
+(setq c3-ts-mode-indent-offset 2)
 
 (use-package eglot
   :ensure t
-  :hook ((c-ts-mode . eglot-ensure)
-         (c++-ts-mode . eglot-ensure)
+  :hook ((c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure)
          (csharp-mode . eglot-ensure)
-         (rust-ts-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
 		 (glsl-mode . eglot-ensure)
+		 (nasm-mode . eglot-ensure)
 		 (python-mode . eglot-ensure))
+
   :config
   (setq eglot-stay-out-of '(flymake))
   (add-to-list 'eglot-server-programs
 			   '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd")))
   (add-to-list 'eglot-server-programs
-			   '((csharp-mode) . ("omnisharp" "-lsp")))
+			   '((csharp-mode) . ("csharp-ls")))
+  ;; (add-to-list 'eglot-server-programs
+  ;; 			   '((csharp-mode) . ("omnisharp" "-lsp")))
   (add-to-list 'eglot-server-programs
-			   '((python-mode) . ("pyright-langserver" "--stdio")))
+			   '((python-mode) . ("pylsp")))
+  (setq-default eglot-workspace-configuration
+				'((pylsp
+				   (plugins
+					(black (enabled t))))))
   (add-to-list 'eglot-server-programs
 			   '((rust-mode rust-ts-mode) . ("rust-analyzer"))))
-
 (setq eglot-events-buffer-config 0)
 
 (add-hook 'eglot-managed-mode-hook

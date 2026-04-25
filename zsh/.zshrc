@@ -11,9 +11,16 @@ alias lg="lazygit"
 alias se="sudoedit"
 alias pyenv="source $HOME/pyenv/bin/activate"
 alias sybau="sudo pacman -Syu"
+alias tstart="sudo systemctl start tailscaled"
+alias tstop="sudo systemctl stop tailscaled"
+alias kstart="sudo systemctl start keyd"
+alias kstop="sudo systemctl stop keyd"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Path
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,

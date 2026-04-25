@@ -6,7 +6,8 @@
 
 # Startup
 # exec swww-daemon
-exec swaybg -i /home/jan/Wallpapers/wall -m fill &
+exec_always swaybg -i /home/jan/Wallpapers/wall -m fill
+exec_always keyd-application-mapper -d
 
 # font pango: JetBrains Mono Nerd Font Medium 10
 font pango: Iosevka Nerd Font Medium 12
@@ -25,6 +26,7 @@ set $menu bemenu-run --fn "Iosevka Nerd Font 16"
 set $browser firefox
 set $browserPrivate firefox --private-window
 set $zoom woomer
+set $minecraft prismlauncher
 
 set $monitor1 HDMI-A-1
 set $monitor2 DP-1
@@ -85,13 +87,19 @@ default_border pixel
 
 	#Start your preferred browser
 	bindsym $mod+Shift+w exec $browser
-	bindsym $mod+Shift+Alt+w exec $browserPrivate
+	bindsym $mod+Shift+p exec $browserPrivate
 
 	# Zoom in at the cursor
 	bindsym $mod+z exec $zoom
 
-	# Start Emacs :(
+	# Start Emacs
 	bindsym $mod+c exec emacs
+
+    # Minecraft Launcher
+    bindsym $mod+m exec $minecraft
+
+    # Launch obs
+    bindsym $mod+o exec obs
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -118,6 +126,12 @@ default_border pixel
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
+
+    # Focus monitor
+    bindsym $mod+Period focus output right
+    bindsym $mod+Comma focus output left
+    bindsym $mod+Shift+Period move output right
+    bindsym $mod+Shift+Comma move output left
 
     # Move the focused window with the same, but add Shift
     bindsym $mod+Shift+$left move left
@@ -171,6 +185,10 @@ default_border pixel
 #
 # Layout stuff:
 #
+    mouse_warping output
+    focus_follows_mouse yes
+    focus_wrapping yes
+
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
@@ -193,6 +211,11 @@ default_border pixel
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
+    bindsym $mod+x focus child
+
+    # Fix window in place
+    bindsym $mod+Shift+s sticky toggle
+
 #
 # Scratchpad:
 #
@@ -227,6 +250,8 @@ mode "resize" {
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+    bindsym q mode "default"
 }
 bindsym $mod+r mode "resize"
 #
@@ -236,6 +261,7 @@ bindsym $mod+r mode "resize"
 	input type:keyboard {
 		xkb_layout us,it,si
 	}
+
 	bindsym $mod+Shift+F1 input type:keyboard xkb_switch_layout 0
 	bindsym $mod+Shift+F2 input type:keyboard xkb_switch_layout 1
 	bindsym $mod+Shift+F3 input type:keyboard xkb_switch_layout 2
@@ -249,18 +275,21 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-   position top
+    position top
+ 
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
 
-   # When the status_command prints a new line to stdout, swaybar updates.
-   # The default just shows the current date and time.
-   status_command while date +'%d/%m/%Y %H:%M'; do sleep 1; done
-   workspace_min_width 25
+    # status_command i3status
+    status_command while date +'%d/%m/%Y %H:%M'; do sleep 1; done
 
-   colors {
-       statusline #ffffff
-       background #000000
-       inactive_workspace #32323200 #32323200 #666666
-   }
+    workspace_min_width 25
+ 
+    colors {
+        statusline #ffffff
+        background #000000
+        inactive_workspace #32323200 #32323200 #666666
+    }
 }
-#
+
 include /etc/sway/config.d/*
