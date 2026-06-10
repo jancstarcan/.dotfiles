@@ -2,8 +2,10 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 (setq load-prefer-newer t)
+
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-save/" t)))
+(setq create-lockfiles nil)
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -15,7 +17,6 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (electric-indent-mode 1)
-(global-visual-line-mode t)
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (setq vc-follow-symlinks t)
@@ -25,7 +26,7 @@
 (savehist-mode 1)
 (repeat-mode 1)
 
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
@@ -36,30 +37,48 @@
   :init
   (load-theme 'gruber-darker))
 
-(use-package ido-completing-read+
-  :ensure t)
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode 1))
 
-(ido-mode 1)
-(ido-everywhere 1)
-(ido-ubiquitous-mode 1)
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides nil))
+
+(use-package consult
+  :ensure t
+  :bind
+  (("C-s" . consult-line)
+   ("C-x b" . consult-buffer)
+   ("M-y" . consult-yank-pop)
+   ("C-c r" . consult-ripgrep)))
+
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode 1))
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-(when (display-graphic-p)
-  (global-set-key (kbd "<escape>") 'ignore))
+(global-set-key (kbd "<escape>") 'ignore)
 
 (global-set-key (kbd "C-.") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-,") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "M-.") #'xref-find-definitions)
-(global-set-key (kbd "M-,") #'xref-find-references)
+(global-set-key (kbd "M-,") #'xref-go-back)
 (global-set-key (kbd "C-c C-r") #'eglot-rename)
-(global-set-key (kbd "C-c C-f") #'eglot-format-buffer)
+(global-set-key (kbd "C-c C-f") #'eglot-format)
 (global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
 (global-set-key (kbd "C-c h") #'eldoc-doc-buffer)
 (global-set-key (kbd "C-c c") 'compile)
+(global-set-key (kbd "C-c C-c") 'recompile)
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-c C-n")
@@ -87,24 +106,24 @@
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z") 'duplicate-line)
 
-(use-package move-text
+(use-package avy
   :ensure t)
+(global-unset-key (kbd "M-j"))
+(global-set-key (kbd "M-j") 'avy-goto-char)
+(global-unset-key (kbd "M-k"))
+(global-set-key (kbd "M-k") 'avy-goto-line)
+
+(use-package move-text
+  :ensure t
+  :bind
+  (("M-p" . move-text-up)
+   ("M-n" . move-text-down)))
 (use-package multiple-cursors
   :ensure t)
 (use-package wrap-region
   :ensure t
   :config
   (wrap-region-global-mode t))
-
-(add-hook 'text-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-p") #'move-text-up)
-            (local-set-key (kbd "M-n") #'move-text-down)))
-
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-p") #'move-text-up)
-            (local-set-key (kbd "M-n") #'move-text-down)))
 
 (use-package expand-region
   :ensure t)
@@ -114,7 +133,7 @@
 
 (use-package rainbow-mode
   :ensure t
-  :hook ((prog-mode css-mode html-mode) . rainbow-mode))
+  :hook ((prog-mode css-mode html-mode vue-ts-mode) . rainbow-mode))
 
 (use-package nasm-mode
   :ensure t)
@@ -143,71 +162,87 @@
 (use-package csproj-mode
   :ensure t)
 
+(use-package typescript-mode
+  :ensure t)
+
+(use-package css-mode
+  :ensure t)
+
+(use-package lua-mode
+  :ensure t)
+
+(add-to-list 'major-mode-remap-alist
+             '(typescript-mode . typescript-ts-mode))
+(add-to-list 'major-mode-remap-alist
+             '(css-mode . css-ts-mode))
 (add-to-list 'major-mode-remap-alist
              '(rust-mode . rust-ts-mode))
-
-;; (add-to-list 'major-mode-remap-alist
-;;              '(c-mode . c-ts-mode))
-;; (add-hook 'c-ts-mode-hook
-;;           (lambda ()
-;;             (setq-local c-ts-mode-indent-offset 4)))
-;; (add-to-list 'major-mode-remap-alist
-;;              '(c++-mode . c++-ts-mode))
-;; (add-hook 'c++-ts-mode-hook
-;;           (lambda ()
-;;             (setq-local c++-ts-mode-indent-offset 4)))
 
 (setq treesit-language-source-alist
       '((c "https://github.com/tree-sitter/tree-sitter-c")
 		(rust "https://github.com/tree-sitter/tree-sitter-rust")
 		(c3 "https://github.com/c3lang/tree-sitter-c3")
 		(typst "https://github.com/uben0/tree-sitter-typst")
-		(cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+		(cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+		(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+		(css "https://github.com/tree-sitter/tree-sitter-css")
+		(vue "https://github.com/ikatyang/tree-sitter-vue")))
 
 (add-to-list 'load-path "~/.emacs.d/c3")
 (require 'c3-ts-mode)
+(setq c3-ts-mode-indent-offset 4)
 
-(setq c3-ts-mode-indent-offset 2)
+(add-to-list 'load-path "~/.emacs.d/vue-ts-mode")
+(require 'vue-ts-mode)
+
+(setq vue-ts-mode-indent-offset 4)
+(setq typescript-ts-mode-indent-offset 4)
+(setq css-ts-mode-indent-offset 4)
 
 (use-package eglot
   :ensure t
   :hook ((c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)
-         (csharp-mode . eglot-ensure)
-         (rust-mode . eglot-ensure)
+		 (c++-mode . eglot-ensure)
+		 (csharp-mode . eglot-ensure)
+		 (rust-mode . eglot-ensure)
 		 (glsl-mode . eglot-ensure)
 		 (nasm-mode . eglot-ensure)
-		 (python-mode . eglot-ensure))
+		 (python-mode . eglot-ensure)
+		 (typescript-mode . eglot-ensure)
+		 (css-mode . eglot-ensure)
+		 (vue-ts-mode . eglot-ensure)
+		 (lua-mode . eglot-ensure))
 
   :config
   (setq eglot-stay-out-of '(flymake))
   (add-to-list 'eglot-server-programs
 			   '((c-mode c++-mode c-ts-mode c++-ts-mode) . ("clangd")))
   (add-to-list 'eglot-server-programs
-			   '((csharp-mode) . ("csharp-ls")))
-  ;; (add-to-list 'eglot-server-programs
-  ;; 			   '((csharp-mode) . ("omnisharp" "-lsp")))
+			   '((csharp-mode) . ("omnisharp" "-lsp")))
+  (add-to-list 'eglot-server-programs
+			   '((rust-mode rust-ts-mode) . ("rust-analyzer")))
   (add-to-list 'eglot-server-programs
 			   '((python-mode) . ("pylsp")))
+  (add-to-list 'eglot-server-programs
+			   '(typescript-mode . ("typescript-language-server" "--stdio")))
   (setq-default eglot-workspace-configuration
 				'((pylsp
 				   (plugins
-					(black (enabled t))))))
-  (add-to-list 'eglot-server-programs
-			   '((rust-mode rust-ts-mode) . ("rust-analyzer"))))
+					(black (enabled t)))))))
+
 (setq eglot-events-buffer-config 0)
 
 (add-hook 'eglot-managed-mode-hook
-          (lambda ()
-            (eglot-inlay-hints-mode -1)))
-
-(global-set-key (kbd "C-c d") #'flymake-show-buffer-diagnostics)
+		  (lambda ()
+			(eglot-inlay-hints-mode -1)))
 
 (use-package company
   :ensure t
   :config
   (setq company-idle-delay nil
-        company-minimum-prefix-length 9999)
+		company-minimum-prefix-length 9999)
 
   (setq company-insertion-on-trigger nil)
   (global-company-mode 1)

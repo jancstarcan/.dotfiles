@@ -1,0 +1,19 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 26,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": [],
+    "modules-right": ["clock"],
+
+    "hyprland/workspaces": {
+        "all-outputs": false,
+        "format": "{name}",
+        "on-click": "hyprctl dispatch hl.dsp.focus({ workspace = {name} })"
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "{:%d/%m/%Y %H:%M}"
+   } 
+}

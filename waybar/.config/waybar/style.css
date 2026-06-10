@@ -1,99 +1,45 @@
 * {
-	font-family: 'JetBrainsMono Nerd Font Propo', sans-serif;
-	font-weight: bold;
-	font-size: 15px;
+    border: none;
+    border-radius: 0;
+    font-family: "Iosevka Nerd Font Mono", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    min-height: 0;
 }
 
 window#waybar {
-	background-color: #1e1e1e;
-	transition-property: background-color;
-	transition-duration: .5s;
-}
-
-window#waybar.hidden {
-	opacity: 0.2;
-}
-
-#workspaces {
-	min-width: 0;
-	padding: 0 0;
-	margin: 0 0 0 5;
+    background: #000000;
+    color: #ffffff;
 }
 
 #workspaces button {
-	padding: 0 10;
-	margin: 0;
-	background-color: transparent;
-	color: #ebdbb2;
-	transition: 0.2s ease-in-out;
-	border-radius: 0;
-	border: none;
-	box-shadow: none;
+    padding: 0 4px;
+    background-color: transparent;
+    color: #666666;
 }
 
-#workspaces button.focused {
-	background-color: rgba(255, 255, 255, 0.2);
+#workspaces button.visible {
+    color: #666666;
+}
+
+#workspaces button.hidden {
+    color: #323232;
+}
+
+#workspaces button.active {
+    color: #ffffff;
+    background-color: #285577;
+    border: 1px solid #4c7899;
+    outline-offset: -1px;
 }
 
 #workspaces button.urgent {
-	background-color: #eb4d4b;
-}
-
-#workspaces button:hover {
-	background: rgba(0, 0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
-#workspaces button.empty {
-	color: rgba(227, 218, 201, 0.5);
-}
-
-#cpu {
-	padding: 0 6 0 0;
-	color: #83A598;
-}
-
-#memory {
-	padding: 0 6;
-	color: #D3869B;
-}
-
-#disk {
-	padding: 0 0 0 6;
-	margin-right: 24;
-	color: #B8BB26;
-}
-
-
-#window {
-	background: transparent;
-	color: #ebdbb2;
+    color: #ffffff;
+    background-color: #dd0011;
 }
 
 #clock {
-	color: #ebdbb2;
-	margin: 0 12;
-}
-
-@keyframes blink {
-	to {
-		background-color: #ffffff;
-		color: #000000;
-	}
-}
-
-#pulseaudio {
-	color: #FABD2F;
-	padding: 0 12;
-	transition: 0.2s ease-in-out;
-}
-
-#pulseaudio:hover {
-	background-color: #FABD2F;
-	color: #282828;
-}
-
-#pulseaudio.muted {
-	background-color: #90b1b1;
-	color: #2a5c45;
+    padding-right: 15px;
+    padding-top: 3px;
+    color: #ffffff;
 }
