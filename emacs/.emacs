@@ -41,6 +41,15 @@
   :ensure t
   :init
   (vertico-mode 1))
+(use-package vertico-quick
+  :after vertico
+  :ensure nil
+  :bind (:map vertico-map ("M-q" . vertico-quick-exit)))
+(use-package vertico-directory
+  :after vertico
+  :bind (:map vertico-map
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word)))
 
 (use-package orderless
   :ensure t
@@ -67,16 +76,8 @@
 
 (global-set-key (kbd "<escape>") 'ignore)
 
-(global-set-key (kbd "C-.") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-,") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-,") 'mc/mark-all-like-this)
-
 (global-set-key (kbd "M-.") #'xref-find-definitions)
 (global-set-key (kbd "M-,") #'xref-go-back)
-(global-set-key (kbd "C-c C-r") #'eglot-rename)
-(global-set-key (kbd "C-c C-f") #'eglot-format)
-(global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
-(global-set-key (kbd "C-c h") #'eldoc-doc-buffer)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c C-c") 'recompile)
 
@@ -107,11 +108,10 @@
 (global-set-key (kbd "C-z") 'duplicate-line)
 
 (use-package avy
-  :ensure t)
-(global-unset-key (kbd "M-j"))
-(global-set-key (kbd "M-j") 'avy-goto-char)
-(global-unset-key (kbd "M-k"))
-(global-set-key (kbd "M-k") 'avy-goto-line)
+  :ensure t
+  :bind
+  (("M-j" . avy-goto-char)
+   ("M-k" . avy-goto-line)))
 
 (use-package move-text
   :ensure t
@@ -119,17 +119,21 @@
   (("M-p" . move-text-up)
    ("M-n" . move-text-down)))
 (use-package multiple-cursors
-  :ensure t)
+  :ensure t
+  :bind
+  (("C-." . mc/mark-next-like-this)
+   ("C-," . mc/mark-previous-like-this)
+   ("C-c C-," . mc/mark-all-like-this)))
 (use-package wrap-region
   :ensure t
   :config
   (wrap-region-global-mode t))
 
 (use-package expand-region
-  :ensure t)
-
-(global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C--") 'er/contract-region)
+  :ensure t
+  :bind
+  (("C-=" . er/expand-region)
+   ("C--" . er/contract-region)))
 
 (use-package rainbow-mode
   :ensure t
@@ -203,6 +207,9 @@
 
 (use-package eglot
   :ensure t
+  :bind
+  (("C-c C-r" . eglot-rename)
+   ("C-c C-f" . eglot-format))
   :hook ((c-mode . eglot-ensure)
 		 (c++-mode . eglot-ensure)
 		 (csharp-mode . eglot-ensure)
@@ -225,6 +232,8 @@
 			   '((rust-mode rust-ts-mode) . ("rust-analyzer")))
   (add-to-list 'eglot-server-programs
 			   '((python-mode) . ("pylsp")))
+  ;; (add-to-list 'eglot-server-programs
+  ;;   		   '((vue-ts-mode) . ("vue-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
 			   '(typescript-mode . ("typescript-language-server" "--stdio")))
   (setq-default eglot-workspace-configuration
@@ -240,18 +249,23 @@
 
 (use-package company
   :ensure t
+  :bind (("C-c C-SPC" . company-complete))
   :config
   (setq company-idle-delay nil
 		company-minimum-prefix-length 9999)
 
   (setq company-insertion-on-trigger nil)
   (global-company-mode 1)
-  (global-set-key (kbd "C-c C-SPC") #'company-complete))
 
 (with-eval-after-load 'company
   (setq company-backends '(company-capf)))
 
+(use-package eldoc
+  :ensure t
+  :bind (("C-c h" . eldoc-doc-buffer)))
+
 (use-package eldoc-box
   :ensure t
+  :bind (("C-c k" . eldoc-box-help-at-point))
   :config
   (setq eldoc-box-clear-with-C-g t))
