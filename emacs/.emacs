@@ -26,6 +26,8 @@
 (savehist-mode 1)
 (repeat-mode 1)
 
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
@@ -48,7 +50,6 @@
 (use-package vertico-directory
   :after vertico
   :bind (:map vertico-map
-              ("DEL" . vertico-directory-delete-char)
               ("M-DEL" . vertico-directory-delete-word)))
 
 (use-package orderless
@@ -78,7 +79,10 @@
 
 (global-set-key (kbd "M-.") #'xref-find-definitions)
 (global-set-key (kbd "M-,") #'xref-go-back)
+(global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
+(global-set-key (kbd "C-c h") #'eldoc-doc-buffer)
 (global-set-key (kbd "C-c c") 'compile)
+(global-unset-key (kbd "C-c C-c"))
 (global-set-key (kbd "C-c C-c") 'recompile)
 
 (with-eval-after-load 'dired
@@ -97,12 +101,30 @@
 
 (defun duplicate-line ()
   (interactive)
-  (save-excursion
-    (let ((text (buffer-substring (line-beginning-position)
-                                  (line-end-position))))
-      (end-of-line)
-      (newline)
-      (insert text))))
+  (undo-boundary)
+  (atomic-change-group
+    (if (use-region-p)
+        (let* ((beg (region-beginning))
+               (end (region-end))
+               (text (buffer-substring beg end))
+               (orig-point (point))
+               (orig-mark (mark)))
+          (goto-char end)
+          (insert text)
+          (set-mark orig-mark)
+          (goto-char orig-point)
+          (activate-mark)
+          (setq deactivate-mark nil))
+
+      (let ((orig-point (point))
+            (text (buffer-substring
+                   (line-beginning-position)
+                   (line-end-position))))
+        (end-of-line)
+        (newline)
+        (insert text)
+        (goto-char orig-point))))
+  (undo-boundary))
 
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z") 'duplicate-line)
@@ -134,6 +156,12 @@
   :bind
   (("C-=" . er/expand-region)
    ("C--" . er/contract-region)))
+
+(use-package change-inner
+  :ensure t
+  :bind
+  (("M-o" . change-inner)
+   ("M-O" . change-outer)))
 
 (use-package rainbow-mode
   :ensure t
@@ -211,7 +239,9 @@
   (("C-c C-r" . eglot-rename)
    ("C-c C-f" . eglot-format))
   :hook ((c-mode . eglot-ensure)
+		 (c-ts-mode . eglot-ensure)
 		 (c++-mode . eglot-ensure)
+		 (c++-ts-mode . eglot-ensure)
 		 (csharp-mode . eglot-ensure)
 		 (rust-mode . eglot-ensure)
 		 (glsl-mode . eglot-ensure)
@@ -249,23 +279,21 @@
 
 (use-package company
   :ensure t
-  :bind (("C-c C-SPC" . company-complete))
   :config
   (setq company-idle-delay nil
-		company-minimum-prefix-length 9999)
+        company-minimum-prefix-length 9999)
 
   (setq company-insertion-on-trigger nil)
   (global-company-mode 1)
+  (global-set-key (kbd "C-c C-SPC") #'company-complete))
 
 (with-eval-after-load 'company
   (setq company-backends '(company-capf)))
 
 (use-package eldoc
-  :ensure t
-  :bind (("C-c h" . eldoc-doc-buffer)))
+  :ensure t)
 
 (use-package eldoc-box
   :ensure t
-  :bind (("C-c k" . eldoc-box-help-at-point))
   :config
   (setq eldoc-box-clear-with-C-g t))

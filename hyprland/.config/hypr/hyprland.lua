@@ -6,6 +6,7 @@ hl.on("hyprland.start", function ()
          hl.exec_cmd("waybar")
          hl.exec_cmd("hyprpm reload -n")
          hl.exec_cmd("discord")
+         hl.exec_cmd("wl-paste --watch cliphist store &")
 end)
 
 hl.monitor({
@@ -148,7 +149,7 @@ hl.config({
 
 hl.config({
       input = {
-         kb_layout  = "us",
+         kb_layout  = "us,it,si",
          kb_variant = "",
          kb_model   = "",
          kb_options = "",
@@ -172,6 +173,13 @@ local mainMod = "SUPER"
 
 local hy3 = hl.plugin.hy3
 
+hl.bind("SUPER + SHIFT + F1",
+    hl.dsp.exec_cmd("hyprctl switchxkblayout current 0"))
+hl.bind("SUPER + SHIFT + F2",
+    hl.dsp.exec_cmd("hyprctl switchxkblayout current 1"))
+hl.bind("SUPER + SHIFT + F3",
+    hl.dsp.exec_cmd("hyprctl switchxkblayout current 2"))
+
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("emacsclient -c"))
@@ -184,6 +192,7 @@ hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(browser .. " --private-window
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("woomer --monitor \"HDMI-A-1\""))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("flameshot gui"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("cliphist list | wofi -S dmenu | cliphist decode | wl-copy"))
 
 hl.bind(mainMod .. " + Q", hy3.kill_active())
 
