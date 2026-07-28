@@ -11,7 +11,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-18"))
+(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-22"))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -26,7 +26,7 @@
 (savehist-mode 1)
 (repeat-mode 1)
 
-(add-hook 'prog-mode-hook #'hs-minor-mode)
+;; (add-hook 'prog-mode-hook #'hs-minor-mode)
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -62,7 +62,7 @@
 (use-package consult
   :ensure t
   :bind
-  (("C-s" . consult-line)
+  (("M-s l" . consult-line)
    ("C-x b" . consult-buffer)
    ("M-y" . consult-yank-pop)
    ("C-c r" . consult-ripgrep)))
@@ -85,9 +85,6 @@
 (global-unset-key (kbd "C-c C-c"))
 (global-set-key (kbd "C-c C-c") 'recompile)
 
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c C-n")
-			  #'dired-create-empty-file))
 (setq dired-listing-switches "-alh")
 
 (use-package magit
@@ -143,9 +140,15 @@
 (use-package multiple-cursors
   :ensure t
   :bind
-  (("C-." . mc/mark-next-like-this)
-   ("C-," . mc/mark-previous-like-this)
-   ("C-c C-," . mc/mark-all-like-this)))
+  (("C-," . mc/mark-previous-like-this)
+   ("C-." . mc/mark-next-like-this)
+   ("C-<" . mc/skip-to-previous-like-this)
+   ("C->" . mc/skip-to-next-like-this)
+   ("C-c C-," . mc/mark-all-like-this)
+   ("C-c C-n" . mc/insert-numbers)
+   ("C-c C-l" . mc/insert-letters)
+   ("C-c C-m" . mc/edit-lines)))
+
 (use-package wrap-region
   :ensure t
   :config
@@ -162,6 +165,28 @@
   :bind
   (("M-o" . change-inner)
    ("M-O" . change-outer)))
+
+(use-package embrace
+  :ensure t
+  :bind
+  (("C-c s a" . embrace-add)
+   ("C-c s c" . embrace-change)
+   ("C-c s d" . embrace-delete)))
+
+(use-package avy-zap
+  :ensure t
+  :bind
+  (("M-z" . avy-zap-up-to-char-dwim)
+   ("M-Z" . avy-zap-to-char-dwim)))
+
+(use-package ace-window
+  :ensure t
+  :bind
+  (("M-0" . ace-window)))
+
+(use-package crux
+  :ensure t
+  :defer t)
 
 (use-package rainbow-mode
   :ensure t

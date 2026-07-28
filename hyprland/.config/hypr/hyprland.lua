@@ -9,24 +9,32 @@ hl.on("hyprland.start", function ()
          hl.exec_cmd("wl-paste --watch cliphist store &")
 end)
 
-hl.monitor({
-      output = "HDMI-A-1",
-      mode = "1920x1080@165",
-      position = "0x0",
-      scale = 1,
-})
+hl.env("HYPRCURSOR_THEME", "Adwaita")
+hl.env("HYPRCURSOR_SIZE", "32")
+hl.env("QT_SCALE_FACTOR", "1.3")
+hl.env("SDL_VIDEODRIVER", "wayland,x11")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
 hl.monitor({
       output = "DP-1",
-      mode = "1920x1200@60",
-      position = "1920x0",
+      mode = "2560x1440@180",
+      position = "0x0",
       scale = 1,
+      vrr = 1,
+})
+
+hl.monitor({
+      output = "HDMI-A-1",
+      mode = "1920x1080@165",
+      position = "2560x0",
+      scale = 1,
+      vrr = 1,
 })
 
 local terminal = "foot"
 local minecraft = "prismlauncher"
 local browser = "firefox"
-local menu = "bemenu-run --fn \"Iosevka Nerd Font 16\""
+local menu = "bemenu-run --fn \"Iosevka Nerd Font 20\""
 
 hl.config({
       general = {
@@ -102,7 +110,7 @@ hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1}   
 hl.curve("almostLinear",   { type = "bezier", points = { {0.5, 0.5},   {0.75, 1}    } })
 hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1}     } })
 
-hl.curve("easy",           { type = "spring", mass = 1, stiffness = 71.2633, dampening = 15.8273644 })
+hl.curve("easy",           { type = "spring", mass = 0.55, stiffness = 229.2633, dampening = 21.5 })
 
 hl.animation({ leaf = "global",        enabled = true,  speed = 10,   bezier = "default" })
 hl.animation({ leaf = "border",        enabled = true,  speed = 5.39, bezier = "easeOutQuint" })
@@ -191,7 +199,7 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(browser .. " --private-window"))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("woomer --monitor \"HDMI-A-1\""))
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("flameshot gui"))
+hl.bind("code:107", hl.dsp.exec_cmd("flameshot gui"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("cliphist list | wofi -S dmenu | cliphist decode | wl-copy"))
 
 hl.bind(mainMod .. " + Q", hy3.kill_active())
@@ -229,14 +237,14 @@ hl.bind(mainMod .. " + SHIFT + Comma", hl.dsp.window.move({ monitor = "-1", foll
 for i = 1, 5 do
    hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i }))
    hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = i , follow = false}))
-   hl.workspace_rule({ workspace = i, monitor = "HDMI-A-1" })
+   hl.workspace_rule({ workspace = i, monitor = "DP-1" })
 end
 
 for i = 6, 10 do
    local key = i - 5
    hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.focus({ workspace = i }))
    hl.bind(mainMod .. " + ALT + SHIFT + " .. key, hl.dsp.window.move({ workspace = i, follow = false }))
-   hl.workspace_rule({ workspace = i, monitor = "DP-1" })
+   hl.workspace_rule({ workspace = i, monitor = "HDMI-A-1" })
 end
 
 hl.bind(mainMod .. " + minus", hl.dsp.workspace.toggle_special("magic"))
@@ -251,6 +259,14 @@ hl.window_rule({
       no_initial_focus  = true,
       center = true,
       workspace = 8,
+})
+
+hl.window_rule({
+      name  = "move-steam",
+      match = { class = "^(steam)$" },
+      no_initial_focus  = true,
+      center = true,
+      workspace = 4,
 })
 
 hl.window_rule({
