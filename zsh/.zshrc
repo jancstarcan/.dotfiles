@@ -59,3 +59,9 @@ autoload -Uz colors
 colors
 
 PROMPT='%F{cyan}[%*]%f %F{green}%n@%m%f %F{blue}%~%f '
+
+saveshot() {
+    mkdir -p "$HOME/Pictures/Screenshots"
+    wl-paste --type image/png \
+        > "$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
+}

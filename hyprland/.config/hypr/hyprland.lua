@@ -202,6 +202,22 @@ hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("woomer --monitor \"HDMI-A-1\""))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("cliphist list | wofi -S dmenu | cliphist decode | wl-copy"))
 
+-- Fullscreen
+hl.bind("Print", hl.dsp.exec_cmd(
+    'grim -o "$(hyprctl monitors -j | jq -r \'.[] | select(.focused) | .name\')" - | wl-copy --type image/png'
+))
+-- Area
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd(
+    'grim -g "$(slurp -d)" - | wl-copy --type image/png'
+))
+-- Focused window
+hl.bind("ALT + Print", hl.dsp.exec_cmd(
+    [[hyprctl activewindow -j |
+      jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' |
+      grim -g - - |
+      wl-copy --type image/png]]
+))
+
 hl.bind(mainMod .. " + Q", hy3.kill_active())
 
 hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.window.float({ action = "toggle" }))
