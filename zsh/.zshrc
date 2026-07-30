@@ -51,6 +51,8 @@ alias ll='ls -lh'
 alias la='ls -A'
 alias lla='ls -lAh'
 
+alias fceux='QT_QPA_PLATFORM=xcb fceux'
+
 mkcd() {
 mkdir -p "$1" && cd "$1"
 }

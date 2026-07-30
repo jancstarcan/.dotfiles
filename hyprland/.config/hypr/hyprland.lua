@@ -1,32 +1,47 @@
-hl.on("hyprland.start", function ()
-         hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-         hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-         hl.exec_cmd("swaybg -i /home/jan/Wallpapers/wall -m fill")
-         hl.exec_cmd("keyd-application-mapper -d")
-         hl.exec_cmd("waybar")
-         hl.exec_cmd("hyprpm reload -n")
-         hl.exec_cmd("discord")
-         hl.exec_cmd("wl-paste --watch cliphist store &")
-end)
-
 hl.env("HYPRCURSOR_THEME", "Adwaita")
-hl.env("HYPRCURSOR_SIZE", "32")
-hl.env("QT_SCALE_FACTOR", "1.3")
-hl.env("SDL_VIDEODRIVER", "wayland,x11")
+hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Adwaita")
+hl.env("XCURSOR_SIZE", "24")
+
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+hl.env("MOZ_ENABLE_WAYLAND", "1")
+
+hl.on("hyprland.start", function ()
+    hl.exec_cmd(
+        "dbus-update-activation-environment --systemd " ..
+        "WAYLAND_DISPLAY XDG_CURRENT_DESKTOP " ..
+        "HYPRCURSOR_THEME HYPRCURSOR_SIZE " ..
+        "XCURSOR_THEME XCURSOR_SIZE"
+    )
+
+    hl.exec_cmd(
+        "systemctl --user import-environment " ..
+        "WAYLAND_DISPLAY XDG_CURRENT_DESKTOP " ..
+        "HYPRCURSOR_THEME HYPRCURSOR_SIZE " ..
+        "XCURSOR_THEME XCURSOR_SIZE"
+    )
+
+    hl.exec_cmd("swaybg -i /home/jan/Wallpapers/wall -m fill")
+    hl.exec_cmd("keyd-application-mapper -d")
+    hl.exec_cmd("waybar")
+    hl.exec_cmd("hyprpm reload -n")
+    hl.exec_cmd("discord")
+    hl.exec_cmd("wl-paste --watch cliphist store")
+    hl.exec_cmd("hyprctl setcursor Adwaita 24")
+end)
 
 hl.monitor({
       output = "DP-1",
       mode = "2560x1440@180",
       position = "0x0",
-      scale = 1,
+      scale = 1.25,
       vrr = 1,
 })
 
 hl.monitor({
       output = "HDMI-A-1",
       mode = "1920x1080@165",
-      position = "2560x0",
+      position = "auto-center-right",
       scale = 1,
       vrr = 1,
 })
@@ -34,7 +49,7 @@ hl.monitor({
 local terminal = "foot"
 local minecraft = "prismlauncher"
 local browser = "firefox"
-local menu = "bemenu-run --fn \"Iosevka Nerd Font 20\""
+local menu = "bemenu-run --fn \"Iosevka Nerd Font 16\""
 
 hl.config({
       general = {
@@ -102,6 +117,10 @@ hl.config({
       animations = {
          enabled = true,
       },
+
+    xwayland = {
+        force_zero_scaling = true
+    },
 })
 
 hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1}    } })

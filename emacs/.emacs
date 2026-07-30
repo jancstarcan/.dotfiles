@@ -11,7 +11,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-22"))
+(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-18"))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
