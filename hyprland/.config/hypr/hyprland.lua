@@ -28,6 +28,7 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("discord")
     hl.exec_cmd("wl-paste --watch cliphist store")
     hl.exec_cmd("hyprctl setcursor Adwaita 24")
+    hl.exec_cmd("openrgb --startminimized")
 end)
 
 hl.monitor({
@@ -39,7 +40,7 @@ hl.monitor({
 })
 
 hl.monitor({
-      output = "HDMI-A-1",
+      output = "DP-2",
       mode = "1920x1080@165",
       position = "auto-center-right",
       scale = 1,
@@ -217,7 +218,7 @@ hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("killall -9 waybar; waybar; h
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(browser .. " --private-window"))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
-hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("woomer --monitor \"HDMI-A-1\""))
+hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("woomer --monitor \"DP-1\""))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("cliphist list | wofi -S dmenu | cliphist decode | wl-copy"))
 
@@ -279,7 +280,7 @@ for i = 6, 10 do
    local key = i - 5
    hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.focus({ workspace = i }))
    hl.bind(mainMod .. " + ALT + SHIFT + " .. key, hl.dsp.window.move({ workspace = i, follow = false }))
-   hl.workspace_rule({ workspace = i, monitor = "HDMI-A-1" })
+   hl.workspace_rule({ workspace = i, monitor = "DP-2" })
 end
 
 hl.bind(mainMod .. " + minus", hl.dsp.workspace.toggle_special("magic"))
