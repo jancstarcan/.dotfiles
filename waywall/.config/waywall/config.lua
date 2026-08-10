@@ -3,7 +3,7 @@ return {
     debug_text = false,
 
     -- ==== LOOKS ====
-    resolution = { 1920, 1080 },
+    resolution = { 2560, 1440 },
 
     bg_col = "#000000",
     toggle_bg_picture = false,
@@ -18,8 +18,8 @@ return {
 
 
     -- ==== ALTERNATIVE RESOLUTIONS ====
-    thin_res = { 340, 1080 },
-    wide_res = { 1920, 300 },
+    thin_res = { 340, 1440 },
+    wide_res = { 2560, 300 },
     tall_res = { 384, 16384 },
 
 
@@ -61,7 +61,7 @@ return {
         variant = "basic",
         options = "caps:none",
     },
-    remaps_text_config = { text = "chat mode", x = 1920/2 - 285, y = 1080/2 - 70, size = 8, color = "#FF00FF" },
+    remaps_text_config = { text = "chat mode", x = 2560/2 - 285, y = 1440/2 - 70, size = 8, color = "#FF00FF" },
 
     -- ==== MISC ====
     res_1440 = false,

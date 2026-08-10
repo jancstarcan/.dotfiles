@@ -1,4 +1,5 @@
 export PATH="$HOME/.local/bin/:$PATH"
+export MAKEFLAGS="-j$(nproc)"
 
 if [[ $(tty) == "/dev/tty1" && -z $WAYLAND_DISPLAY ]]; then
     dbus-run-session start-hyprland
