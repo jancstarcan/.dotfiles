@@ -2,8 +2,8 @@ return {
     remapped_kb = {
         ["LeftAlt"] = "0",
         ["0"] = "LeftAlt",
-        ["Grave"] = "F3",
-        ["F3"] = "Grave",
+        -- ["Grave"] = "F3",
+        -- ["F3"] = "Grave",
         ["A"] = "O",
         ["O"] = "H",
         ["H"] = "A",
