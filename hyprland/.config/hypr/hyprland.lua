@@ -48,7 +48,6 @@ hl.monitor({
 })
 
 local terminal = "foot"
-local minecraft = "prismlauncher"
 local browser = "firefox"
 local menu = "bemenu-run --fn \"Iosevka Nerd Font 16\""
 
@@ -212,7 +211,9 @@ hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("emacsclient -c"))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("emacs"))
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(minecraft))
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("prismlauncher"))
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("steam"))
+hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd("missioncenter"))
 hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("obs"))
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("killall -9 waybar; waybar; hyprctl reload"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(browser))
