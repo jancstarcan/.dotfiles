@@ -302,18 +302,16 @@
 		  (lambda ()
 			(eglot-inlay-hints-mode -1)))
 
-(use-package company
+(use-package corfu
   :ensure t
+  :custom
+  (corfu-auto nil)
+  :init
+  (global-corfu-mode 1)
   :config
-  (setq company-idle-delay nil
-        company-minimum-prefix-length 9999)
+  (setq completion-in-region-function #'corfu-completion-in-region))
 
-  (setq company-insertion-on-trigger nil)
-  (global-company-mode 1)
-  (global-set-key (kbd "C-c C-SPC") #'company-complete))
-
-(with-eval-after-load 'company
-  (setq company-backends '(company-capf)))
+(global-set-key (kbd "C-c C-SPC") #'completion-at-point)
 
 (use-package eldoc
   :ensure t)

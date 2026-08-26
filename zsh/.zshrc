@@ -51,7 +51,7 @@ alias ll='ls -lh'
 alias la='ls -A'
 alias lla='ls -lAh'
 
-alias fceux='QT_QPA_PLATFORM=xcb fceux'
+alias fceux='gamescope -f -- fceux'
 
 mkcd() {
 mkdir -p "$1" && cd "$1"
@@ -67,3 +67,9 @@ saveshot() {
     wl-paste --type image/png \
         > "$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"
 }
+
+# NPM global bin (added by Qwen Code installer)
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+# opencode
+export PATH=/home/jan/.opencode/bin:$PATH

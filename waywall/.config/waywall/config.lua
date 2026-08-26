@@ -10,9 +10,9 @@ return {
     text_col = "#FFFFFF",
 
     ninbot_anchor = {
-        position = "topright",
+        position = "bottomleft",
         x = 0,
-        y = 90,
+        y = 0,
     },
     ninbot_opacity = 1,
 

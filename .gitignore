@@ -7,3 +7,6 @@
 /emacs/.emacs.d/backups/
 /emacs/.emacs.d/auto-save-list/
 /emacs/.emacs.d/.mc-lists.el
+/emacs/.emacs.d/auto-save/
+/emacs/.emacs.d/%backup%~
+/emacs/.emacs.d/tramp

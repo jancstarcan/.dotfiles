@@ -299,6 +299,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+      name  = "move-prismlauncher",
+      match = { class = "^(prismlauncher)$" },
+      no_initial_focus  = true,
+      center = true,
+      workspace = 4,
+})
+
+hl.window_rule({
       name  = "move-steam",
       match = { class = "^(steam)$" },
       no_initial_focus  = true,
