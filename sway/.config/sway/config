@@ -31,8 +31,8 @@ set $browserPrivate firefox --private-window
 set $zoom woomer
 set $minecraft prismlauncher
 
-set $monitor1 HDMI-A-1
-set $monitor2 DP-1
+set $monitor1 DP-1
+set $monitor2 DP-2
 
 ### Output configuration
 #
@@ -40,8 +40,8 @@ set $monitor2 DP-1
 #
 # Example configuration:
 #
-output $monitor1 res 1920x1080 adaptive_sync on pos 0,0
-output $monitor2 res 1920x1200 pos 1920,-120
+output $monitor1 mode 2560x1440@180Hz adaptive_sync on pos 0,0 scale 1.25
+output $monitor2 mode 1920x1200@165Hz adaptive_sync on
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -96,7 +96,7 @@ default_border pixel
 	bindsym $mod+z exec $zoom
 
 	# Start Emacs
-	bindsym $mod+c exec emacs
+	bindsym $mod+c exec emacsclient -c
 
     # Minecraft Launcher
     bindsym $mod+m exec $minecraft
@@ -217,7 +217,7 @@ default_border pixel
     bindsym $mod+x focus child
 
     # Fix window in place
-    bindsym $mod+Shift+s sticky toggle
+    bindsym $mod+Shift+s emacs
 
 #
 # Scratchpad:

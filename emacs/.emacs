@@ -78,6 +78,7 @@
 (global-set-key (kbd "<escape>") 'ignore)
 
 (global-set-key (kbd "M-.") #'xref-find-definitions)
+(global-set-key (kbd "M-'") #'xref-find-references)
 (global-set-key (kbd "M-,") #'xref-go-back)
 (global-set-key (kbd "C-c k") #'eldoc-box-help-at-point)
 (global-set-key (kbd "C-c h") #'eldoc-doc-buffer)

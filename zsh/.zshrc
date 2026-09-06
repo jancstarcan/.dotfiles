@@ -52,6 +52,7 @@ alias la='ls -A'
 alias lla='ls -lAh'
 
 alias fceux='gamescope -f -- fceux'
+alias sober='flatpak run org.vinegarhq.Sober'
 
 mkcd() {
 mkdir -p "$1" && cd "$1"

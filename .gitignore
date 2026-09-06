@@ -1,12 +1,4 @@
-/emacs/.emacs.d/tree-sitter/
-/emacs/.emacs.d/transient/
-/emacs/.emacs.d/projects
-/emacs/.emacs.d/history
-/emacs/.emacs.d/elpa/
-/emacs/.emacs.d/eln-cache/
-/emacs/.emacs.d/backups/
-/emacs/.emacs.d/auto-save-list/
-/emacs/.emacs.d/.mc-lists.el
-/emacs/.emacs.d/auto-save/
-/emacs/.emacs.d/%backup%~
-/emacs/.emacs.d/tramp
+/emacs/.emacs.d/*
+!/emacs/.emacs.d/c3
+!/emacs/.emacs.d/vue-ts-mode
+!/emacs/.emacs.d/early-init.el
